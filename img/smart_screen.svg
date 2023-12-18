@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <rect width="200" height="200" fill="none" />
+  <g transform="translate(100, 100)">
+    <rect x="-40" y="-80" width="80" height="160" rx="5" ry="5" fill="black" />
+    <rect x="-30" y="-70" width="60" height="120" rx="5" ry="5" fill="white" />
+  </g>
+  <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0" to="90" dur="4s" repeatCount="indefinite" values="0;90;0" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.42,0,0.58,1;0.42,0,0.58,1" />
+</svg>

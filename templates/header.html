@@ -1,0 +1,21 @@
+<header>
+    <img onclick="openPage('./summary.html')" style="margin-left: 30px;cursor: pointer;" src="../img/Capa 3.svg">
+    <div style="display: flex; flex-direction: column;">
+        <h3 class="Kanban">Kanban Project Management Tool <br/> <span style="font-size: 12px;color: red;" id="guest-login"></span></h3>
+        <h5></h5>
+    </div>
+    <div class="user-border">
+        <a href="./help.html">
+            <img class="help" src="../img/help.svg">
+        </a>
+        <div class="user-border-logo" onclick="userNavbar()">
+            <div id="header-icon" class="header-icon">TT </div>
+
+        </div>
+        <div class="Logout d-none" id="navbar">
+            <a href="./legal_notice.html"> <button class="btn-logout">Legal notice</button></a>
+            <a href="./privacy_policy.html"><button class="btn-logout">Privacy Policy</button></a>
+            <button onclick="openPage('../index.html');clearLocalStorage()" class="btn-logout">Log out</button>
+        </div>
+    </div>
+</header>

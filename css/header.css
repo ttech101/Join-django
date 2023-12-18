@@ -1,0 +1,97 @@
+body{
+    margin: 0;
+    font-family: Inter;
+}
+
+header{
+    background-color: white;
+    height: 96px;
+    width: 100%;
+    z-index: 5;
+    box-shadow: -2px 0px 6px 0px rgb(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+}
+
+.Kanban{
+    font-size: 20px;
+    position: absolute;
+    left: 370px;
+    z-index: 2;
+}
+
+.user-border{
+    display: flex;
+    margin-right: 70px;
+}
+
+.help{
+    height: 25px;
+    margin-top: 16px;
+    cursor: pointer;
+}
+
+.help:hover{
+    transform: scale(1.1);
+}
+
+.user-border-logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 40px;
+    border-radius: 50px;
+    color: #29ABE2;
+    font-weight: bold;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.user-border-logo:hover{
+    transform: scale(1.1);
+}
+
+.Logout {
+    width: 152px;
+    position: fixed;
+    top: 96px;
+    right: 0;
+    z-index: 30;
+    margin-right: 25px;
+    background-color: #2A3647;
+    padding: 15px 13px 15px 15px;
+    border-radius: 15px 0px 15px 15px;
+}
+
+.btn-logout {
+    color: rgb(220, 218, 218);
+    background-color: #2A3647;
+    border: none;
+    padding: 10px 10px;
+    cursor: pointer;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.btn-logout:hover{
+    background-color: #2a4468;
+    border-radius: 10px;
+}
+
+.d-none {
+    display: none;
+}
+
+@media (max-width: 950px){
+    .Kanban{
+        display: none;
+    }
+}
+
+@media (max-width: 500px){
+    .user-border{
+        margin-right: 30px;
+    }
+}

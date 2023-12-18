@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join/Add Task</title>
+  <link rel="icon" href="../img/Logo_for_Favicon.png" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/fonts.css" />
+  <link rel="stylesheet" href="../css/add_task.css" />
+  <link rel="stylesheet" href="../css/header.css" />
+  <link rel="stylesheet" href="../css/sidebar.css" />
+  <link rel="stylesheet" href="../css/contacts.css" />
+  <script src="../js/includeHTML.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/script.js"></script>
+  <script src="../js/board_template.js"></script>
+  <script src="../js/board.js"></script>
+  <script src="../js/add_task.js"></script>
+  <script src="../js/add_task_page.js"></script>
+  <script src="../js/add_task_html.js"></script>
+  <script src="../js/contacts_page.js"></script>
+  <script src="../js/contacts.js"></script>
+  <script src="../js/contacts_html.js"></script>
+</head>
+
+<body onload="includeHTML(); initAddTask()">
+  <div w3-include-html="../templates/header.html"></div>
+  <div w3-include-html="../templates/sidebar.html"></div>
+  <div w3-include-html="../templates/landscape.html"></div>
+  <div id="contacts-add-bg" class="contacts-add-bg d-none" onclick="closeNewContacts()"></div>
+  <main onclick="closeAssignedToField()" class="task-body">
+    <form class="task-form" onsubmit="createNewTask(); return false">
+      <div class="task-form-box">
+        <h2 class="task-h2">Add Task</h2>
+        <div id="task-input-con" class="task-input-con"></div>
+      </div>
+      <div class="task-foot-con">
+        <span class="task-foot-text"><span class="task-star">*</span>This field is requierd</span>
+        <div class="task-button-con">
+          <input onclick="resetTaskForm()" type="button" value="Clear" class="task-button task-bt-clear" />
+          <input type="submit" value="Create Task" class="task-button task-bt-create" />
+        </div>
+      </div>
+    </form>
+  </main>
+</body>
+
+</html>
