@@ -1,11 +1,11 @@
 /**
  * This function creates the letters view
- * 
- * @param {*} firstCha 
+ *
+ * @param {*} firstCha
  * @returns return firstCha
  */
 function createContactsListLetters(firstCha) {
-    return /*html*/`
+  return /*html*/ `
         <div>
             <div class="contacts-list-letters">${firstCha}</div>
             <div class="contacts-hr-line"></div>
@@ -14,37 +14,37 @@ function createContactsListLetters(firstCha) {
 
 /**
  * This function creates the layout for contacting you
- * 
- * @param {number} i 
- * @param {string} contact 
- * @param {string} myData 
+ *
+ * @param {number} i
+ * @param {string} contact
+ * @param {string} myData
  * @returns return contact layout
  */
 function createContactsHTML(i, contact, myData) {
-    return /*html*/`
+  return /*html*/ `
             <div id="contact-con-${i}" class="contacts-list-sgl-con" onclick="showContact(${i})">
-                <div class="contacts-color-icon" style="background-color:${contact['hex_color']};">${contact['logogram']}</div>
+                <div class="contacts-color-icon" style="background-color:${contact["hex_color"]};">${contact["logogram"]}</div>
                 <div>
-                    <h3 class="contact-name" id="contact-${i}">${contact['name']}&nbsp;${myData}</h3>
-                    <div class="contact-email" id="email-${i}">${contact['email']}</div>
+                    <h3 class="contact-name" id="contact-${i}">${contact["name"]}&nbsp;${myData}</h3>
+                    <div class="contact-email" id="email-${i}">${contact["email"]}</div>
                 </div>
             </div>`;
 }
 
 /**
  * This function creates the individual contact
- * 
- * @param {number} i 
- * @param {string} contact 
+ *
+ * @param {number} i
+ * @param {string} contact
  * @returns return singeln contact
  */
 function createSglContactHTML(i, contact) {
-    return /*html*/`
+  return /*html*/ `
         <div id="contact-con-${i}" class="flx-col">
             <div class="contact-sgl-head-con">
-                <div class="contacts-color-icon con-icon-sz" style="background-color:${contact['hex_color']};">${contact['logogram']}</div>
+                <div class="contacts-color-icon con-icon-sz" style="background-color:${contact["hex_color"]};">${contact["logogram"]}</div>
                 <div>
-                    <h2 class="contact-name-sgl" id="contact-${i}">${contact['name']}</h2>
+                    <h2 class="contact-name-sgl" id="contact-${i}">${contact["name"]}</h2>
                     <div class="flx">
                         <button class="contact-bt-sgl contact-bt-sgl-edit" onclick="showPopupContact(${i})">Edit</button>
                         <button class="contact-bt-sgl contact-bt-sgl-delete" onclick="showPopupContact(${i})">Delete</button>
@@ -54,23 +54,23 @@ function createSglContactHTML(i, contact) {
             <div>
                 <h3 class="contact-sgl-text">Contact Information</h3>
                 <h4 class="contact-h4">Email</h4>
-                <a href="mailto:${contact['email']}" class="contact-email" id="email-${i}">${contact['email']}</a>
+                <a href="mailto:${contact["email"]}" class="contact-email" id="email-${i}">${contact["email"]}</a>
                 <h4 class="contact-h4">Phone</h4>
                 <div class="contact-phone" id="phone-${i}">
-                <a href="tel:${contact['phone']}">${contact['phone']}</a>
+                <a href="tel:${contact["phone_number"]}">${contact["phone_number"]}</a>
             </div>
             </div>
         </div>
-    `
+    `;
 }
 
 /**
  * This function creates the individual as a popup
- * 
+ *
  * @returns return popup contact
  */
 function createPopupContact() {
-    return /*html*/`
+  return /*html*/ `
         <div id="contacts-add-con" class="contacts-add-con" onclick="stopClosing(event)">
             <div class="contacts-add-con-left">
                 <img src="../img/contacts-join-logo.svg" alt="" class="contacts-join-logo"/>
@@ -109,23 +109,23 @@ function createPopupContact() {
 
 /**
  * This function creates the contact exextiret already icon
- * 
- * @param {number} i 
+ *
+ * @param {number} i
  * @returns return popup exist icon
  */
 function createPopupExistContactIcon(i) {
-    return /*html*/`
-        <div style="background-color:${contacts[i]['hex_color']};" class="contacts-color-icon contacts-user-logo contacts-user-popup">${contacts[i]['logogram']}</div>`;
+  return /*html*/ `
+        <div style="background-color:${contacts[i]["hex_color"]};" class="contacts-color-icon contacts-user-logo contacts-user-popup">${contacts[i]["logogram"]}</div>`;
 }
 
 /**
  * This function creates the contact exextiret already button
- * 
- * @param {number} i 
+ *
+ * @param {number} i
  * @returns return popup exist button
  */
 function createPopupExistContactBt(i) {
-    return /*html*/`
+  return /*html*/ `
         <input type="button" value="Delete" id="contacts-bt-delet" onclick="deleteContacts(${i})" class="contacts-button contacts-bt-delet contacts-bt-ft">
         <input type="button" value="Save" id="contacts-bt-change" onclick="saveChangedContact(${i})" class="contacts-button contacts-bt-create contacts-bt-ft contacts-bt-check">`;
 }

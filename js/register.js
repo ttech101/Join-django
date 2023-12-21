@@ -5,27 +5,27 @@ let users = [];
  * @returns {Promise<void>}
  */
 async function init() {
-    //loadUsersFromLocalStorage();
-    //loadUsers(); 
+  //loadUsersFromLocalStorage();
+  //loadUsers();
 }
 
 /**
  * Save the current users array to local storage.
  */
 function saveUsersToLocalStorage() {
-    localStorage.setItem('users', JSON.stringify(users));
+  localStorage.setItem("users", JSON.stringify(users));
 }
 
 /**
  * Load users from local storage and update the users array.
  */
 function loadUsersFromLocalStorage() {
-    let storedUsers = localStorage.getItem('users');
-    if (storedUsers) {
-        users = JSON.parse(storedUsers);
-    } else {
-        users = [];
-    }
+  let storedUsers = localStorage.getItem("users");
+  if (storedUsers) {
+    users = JSON.parse(storedUsers);
+  } else {
+    users = [];
+  }
 }
 
 /**
@@ -33,17 +33,14 @@ function loadUsersFromLocalStorage() {
  * @returns {Promise<void>}
  */
 async function loadUsers() {
-    try {
-        let parsedUsers = JSON.parse(await getItem('users'));
-        if (Array.isArray(parsedUsers)) {
-            users = parsedUsers;
-        } else {
-            //error('Parsed users is not an array:', parsedUsers);
-            users = [];
-        }
-    } catch (e) {
-        //error('Loading error:', e);
+  try {
+    let parsedUsers = JSON.parse(await getItem("users"));
+    if (Array.isArray(parsedUsers)) {
+      users = parsedUsers;
+    } else {
+      users = [];
     }
+  } catch (e) {}
 }
 
 /**
@@ -51,11 +48,11 @@ async function loadUsers() {
  * @returns {Promise<void>}
  */
 async function register() {
-    if (!validateRegistrationFields()) {
-        return;
-    }
-
+  if (!validateRegistrationFields()) {
+    return;
+  } else {
     await processRegistration();
+  }
 }
 
 /**
@@ -63,24 +60,26 @@ async function register() {
  * @returns {boolean} Whether the form fields are valid or not.
  */
 function validateRegistrationFields() {
-    let checkbox = document.getElementById('privacyPolicyCheckbox');
-    if (!checkbox.checked) {
-        showPopup('Please accept the privacy policy before proceeding.');
-        return false;
-    }
-    let email = document.getElementById('emailregister').value;
-    let password1 = document.getElementById('passwordregister1').value;
-    let password2 = document.getElementById('passwordregister2').value;
-    let existingUser = users.find(u => u.email === email);
-    if (existingUser) {
-        showPopup('This email address is already registered. Please use a different one.');
-        return false;
-    }
-    if (password1 !== password2) {
-        showPopup('Your password does not match.');
-        return false;
-    }
-    return true;
+  let checkbox = document.getElementById("privacyPolicyCheckbox");
+  if (!checkbox.checked) {
+    showPopup("Please accept the privacy policy before proceeding.");
+    return false;
+  }
+  let email = document.getElementById("emailregister").value;
+  let password1 = document.getElementById("passwordregister1").value;
+  let password2 = document.getElementById("passwordregister2").value;
+  let existingUser = users.find((u) => u.email === email);
+  if (existingUser) {
+    showPopup(
+      "This email address is already registered. Please use a different one."
+    );
+    return false;
+  }
+  if (password1 !== password2) {
+    showPopup("Your password does not match.");
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -88,33 +87,56 @@ function validateRegistrationFields() {
  * @returns {Promise<void>}
  */
 async function processRegistration() {
-    let email = document.getElementById('emailregister');
-    let password1 = document.getElementById('passwordregister1');
-    let name = document.getElementById('nameregister');
-    let registerBtn = document.getElementById('registerBtn');
+  let email = document.getElementById("emailregister").value;
+  let password1 = document.getElementById("passwordregister1").value;
+  let password2 = document.getElementById("passwordregister2").value;
+  let name = document.getElementById("nameregister").value;
+  let registerBtn = document.getElementById("registerBtn");
+  registerBtn.disabled = true;
 
-    registerBtn.disabled = true;
-    await loadUsers();
-    users.push({
-        name: name.value,
-        email: email.value,
-        password: password1.value,
-    });
-    await setItem('users', JSON.stringify(users));
-    await loadStandardUserListAndContacts(email.value, name.value);
-    showPopupAndRedirect('You have successfully registered.', 'index.html');
-    resetFormValue();
+  var formdata = new FormData();
+  formdata.append("username", name);
+  formdata.append("first_name", name);
+  formdata.append("last_name", name);
+  formdata.append("password1", password1);
+  formdata.append("email", email);
+  formdata.append("password2", password2);
+
+  var requestOptions = {
+    method: "POST",
+    body: formdata,
+    redirect: "follow",
+  };
+
+  await fetch(STORAGE_URL + "register/", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      // if ("token" in result) {
+      //   showPopup("Logged in successfully");
+      // } else {
+      //   showPopup("Email and/or password are incorrect");
+      // }
+    })
+    .catch((error) => console.log("Server failed", error));
+  //   await loadUsers();
+
+  //   await setItem("users", JSON.stringify(users));
+  //   await loadStandardUserListAndContacts(email.value, name.value);
+  // showPopupAndRedirect("You have successfully registered.", "index.html");
+  //   resetFormValue();
 }
+
+async function checkLoginUser(email, password) {}
 
 /**
  * Reset the registration form values.
  */
 function resetFormValue() {
-    document.getElementById('nameregister').value = '';
-    document.getElementById('emailregister').value = '';
-    document.getElementById('passwordregister1').value = '';
-    document.getElementById('passwordregister2').value = '';
-    document.getElementById('registerBtn').disabled = false;
+  document.getElementById("nameregister").value = "";
+  document.getElementById("emailregister").value = "";
+  document.getElementById("passwordregister1").value = "";
+  document.getElementById("passwordregister2").value = "";
+  document.getElementById("registerBtn").disabled = false;
 }
 
 /**
@@ -124,11 +146,11 @@ function resetFormValue() {
  * @returns {Promise<void>}
  */
 async function loadStandardUserListAndContacts(user, name) {
-    let new_list = JSON.parse(await getItem('guest-list'));
-    await setItem(user + '-list', new_list);
-    let new_contact = JSON.parse(await getItem('guest-contacts'));
-    addUserToContacts(user, name, new_contact);
-    await setItem(user + '-contacts', new_contact);
+  let new_list = JSON.parse(await getItem("guest-list"));
+  await setItem(user + "-list", new_list);
+  let new_contact = JSON.parse(await getItem("guest-contacts"));
+  addUserToContacts(user, name, new_contact);
+  await setItem(user + "-contacts", new_contact);
 }
 
 /**
@@ -139,34 +161,34 @@ async function loadStandardUserListAndContacts(user, name) {
  * @returns {number} The new length of the contacts list after adding the user.
  */
 function addUserToContacts(user, name, new_contact) {
-    if (user !== 'guest') {
-        let nameAlterd = name.charAt(0).toUpperCase() + name.slice(1);
-        let ownContactData = {
-            'name': nameAlterd,
-            'email': user,
-            'phone': "",
-            'logogram': getLogogram(nameAlterd),
-            'hex_color': getContactColor()
-        }
-        return new_contact.push(ownContactData);
-    }
+  if (user !== "guest") {
+    let nameAlterd = name.charAt(0).toUpperCase() + name.slice(1);
+    let ownContactData = {
+      name: nameAlterd,
+      email: user,
+      phone: "",
+      logogram: getLogogram(nameAlterd),
+      hex_color: getContactColor(),
+    };
+    return new_contact.push(ownContactData);
+  }
 }
 
 /**
  * Here the password is reset and the user can create a new one
  */
 async function changePassword() {
-    if (validatePasswords()) {
-        let password = document.getElementById('ForgotPassword1').value;
-        for (let i = 0; i < users.length; i++) {
-            const element = users[i];
-            if (element.email == user.email) {
-                element.password = password;
-            }
-            await setItem('users', JSON.stringify(users));
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
-        }
+  if (validatePasswords()) {
+    let password = document.getElementById("ForgotPassword1").value;
+    for (let i = 0; i < users.length; i++) {
+      const element = users[i];
+      if (element.email == user.email) {
+        element.password = password;
+      }
+      await setItem("users", JSON.stringify(users));
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 2000);
     }
+  }
 }

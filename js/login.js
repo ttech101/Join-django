@@ -6,27 +6,61 @@
  * @async
  */
 async function login() {
-    await loadUsers();
-    let emailLogin = document.getElementById('email');
-    let passwordLogin = document.getElementById('password');
-    let user = users.find(u => u.email == emailLogin.value && u.password == passwordLogin.value);
-    if (user) {
-        saveUserinLocalStorge(user.email,user.name);
-        window.location.href = './html/summary.html';
-    } else {
-        showPopup('Email and/or password are incorrect.');
-    }
+  let emailLogin = document.getElementById("email").value;
+  let passwordLogin = document.getElementById("password").value;
+  await checkLoginUser(emailLogin, passwordLogin);
+  // let user = users.find(u => u.email == emailLogin.value && u.password == passwordLogin.value);
+  // if (user) {
+  //     saveUserinLocalStorge(user.email,user.name);
+  //     window.location.href = './html/summary.html';
+  // } else {
+  //     showPopup('Email and/or password are incorrect.');
+  // }
 }
 
 /**
  * Saves a user's email and name to LocalStorage.
- * 
+ *
  * @param {string} u - The user's email.
  * @param {string} n - The user's name.
  */
-function saveUserinLocalStorge(u,n) {
-    user = JSON.stringify(u);
-    user_name = JSON.stringify(n);
-    localStorage.setItem('user', user);
-    localStorage.setItem('name', user_name);
+function saveUserinLocalStorge(u, n) {
+  user = JSON.stringify(u);
+  user_name = JSON.stringify(n);
+  localStorage.setItem("user", user);
+  localStorage.setItem("name", user_name);
+}
+
+async function checkLoginUser(email, password) {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  const raw = JSON.stringify({
+    username: email,
+    password: password,
+  });
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow",
+  };
+  fetch(STORAGE_URL + "login/", requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      if ("token" in result) {
+        const authToken = result.token;
+        contact = JSON.stringify(result.contact);
+        task = JSON.stringify(result.task);
+        long_name = result.name;
+        sessionStorage.setItem("authToken", authToken);
+        sessionStorage.setItem("contacts", contact);
+        sessionStorage.setItem("tasks", task);
+        sessionStorage.setItem("name", long_name);
+        window.location.href = "./html/summary.html";
+        showPopup("Logged in successfully");
+      } else {
+        showPopup("Email and/or password are incorrect");
+      }
+    })
+    .catch((error) => console.log("Server failed", error));
 }
