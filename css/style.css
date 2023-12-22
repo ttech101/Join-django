@@ -1,706 +1,697 @@
 body {
-    margin: 0;
-    background-color: #F6F7F8;
-    font-family: 'Inter', sans-serif;
+  margin: 0;
+  background-color: #f6f7f8;
+  font-family: "Inter", sans-serif;
 }
 
 body::-webkit-scrollbar {
-    width: 16px;
+  width: 16px;
 }
 
 body::-webkit-scrollbar-track {
-    background: #ffffff;
+  background: #ffffff;
 }
 
 body::-webkit-scrollbar-thumb {
-    background-color: #6C757D;
-    border-radius: 10px;
-    border: 3px solid #ffffff;
+  background-color: #6c757d;
+  border-radius: 10px;
+  border: 3px solid #ffffff;
 }
 
 form::-webkit-scrollbar {
-    width: 16px;
+  width: 16px;
 }
 
 form::-webkit-scrollbar-track {
-    background: #ffffff;
+  background: #ffffff;
 }
 
 form::-webkit-scrollbar-thumb {
-    background-color: #6C757D;
-    border-radius: 10px;
-    border: 3px solid #ffffff;
+  background-color: #6c757d;
+  border-radius: 10px;
+  border: 3px solid #ffffff;
 }
 
 .d-none {
-    display: none !important;
+  display: none !important;
 }
 
-.landscape-stop{
-    position: relative;
-    height: 100vh;
-width: 100%;
-z-index: 100;
+.landscape-stop {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  z-index: 100;
 }
 
 /* Login */
 .begin {
-    height: 98vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 98vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .login {
-    background-color: white;
-    height: fit-content;
-    width: 570px;
-    border-radius: 15px;
-    box-shadow: -2px 0px 6px 0px rgb(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 2;
-    padding-top: 25px;
-    padding-bottom: 25px;
-    transition: all 0.5s;
-
+  background-color: white;
+  height: fit-content;
+  width: 570px;
+  border-radius: 15px;
+  box-shadow: -2px 0px 6px 0px rgb(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  transition: all 0.5s;
 }
 
 .login-headline {
-    font-size: 40px;
-    margin-bottom: 0px;
-    margin-top: 0px;
+  font-size: 40px;
+  margin-bottom: 0px;
+  margin-top: 0px;
 }
 
 .sign-up-headline {
-    font-size: 40px;
-    margin-bottom: 0px;
-    margin-top: 12px;
+  font-size: 40px;
+  margin-bottom: 0px;
+  margin-top: 12px;
 }
 
 .VectorImg {
-    width: 100px;
-    height: 2px;
+  width: 100px;
+  height: 2px;
 }
 
 .email-login input {
-    display: flex;
-    border-radius: 7px;
-    border: 1px solid #c0c0c0;
-    font-size: 18px;
-    box-sizing: border-box;
-    height: 40px;
-    width: 380px;
-    padding: 10px;
-    margin-top: 17px;
+  display: flex;
+  border-radius: 7px;
+  border: 1px solid #c0c0c0;
+  font-size: 18px;
+  box-sizing: border-box;
+  height: 40px;
+  width: 380px;
+  padding: 10px;
+  margin-top: 17px;
+  padding-right: 30px;
 }
 
 .mail-img {
-    background-image: url('../img/mail.svg') !important;
-    background-position: calc(100% - 5px) 8px !important;
-    background-size: 20px !important;
-    background-repeat: no-repeat !important;
+  background-image: url("../img/mail.svg") !important;
+  background-position: calc(100% - 5px) 8px !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
 }
 
 .form {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .email-login input::placeholder {
-    color: #bebcbc;
+  color: #bebcbc;
 }
 
 .header-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 12px;
-    border-radius: 100%;
-    color: white;
-    border: 2px solid black;
-    height: 30px;
-    width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  border-radius: 100%;
+  color: white;
+  border: 2px solid black;
+  height: 30px;
+  width: 30px;
 }
 
 .password-img {
-    background-image: url('../img/lock.svg') !important;
-    background-position: calc(100% - 5px) 8px !important;
-    background-size: 20px !important;
-    background-repeat: no-repeat !important;
+  background-image: url("../img/lock.svg") !important;
+  background-position: calc(100% - 5px) 8px !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
 }
 
 .name-img {
-    background-image: url('../img/person.svg') !important;
-    background-position: 350px 8px !important;
-    background-size: 20px !important;
-    background-repeat: no-repeat !important;
+  background-image: url("../img/person.svg") !important;
+  background-position: 350px 8px !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
 }
 
 .password-login input::placeholder {
-    color: #bebcbc;
+  color: #bebcbc;
 }
 
 .checkbox {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .checkbox-sign-up {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    margin-top: 300px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  margin-top: 300px;
 }
 
 .password {
-    color: #29ABE2;
-    font-size: 15px;
-    cursor: pointer;
-    margin-left: 40px;
+  color: #29abe2;
+  font-size: 15px;
+  cursor: pointer;
+  margin-left: 40px;
 }
 
 .password:hover {
-    transform: scale(1.1);
-    text-decoration: underline;
+  transform: scale(1.1);
+  text-decoration: underline;
 }
 
 .login-button {
-    border-radius: 5px;
-    width: fit-content;
-    height: 43px;
-    border: none;
-    font-size: 20px;
-    font-weight: bold;
-    background-color: #2A3647;
-    color: white;
-    cursor: pointer;
-    margin-right: 5px;
-    transition: all 0.5s;
-    padding-left: 25px;
-    padding-right: 25px;
+  border-radius: 5px;
+  width: fit-content;
+  height: 43px;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #2a3647;
+  color: white;
+  cursor: pointer;
+  margin-right: 5px;
+  transition: all 0.5s;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .login-button:hover {
-    background-color: #29ABE2;
-    box-shadow: -2px 0px 6px 0px rgb(0, 0, 0, 0.7);
+  background-color: #29abe2;
+  box-shadow: -2px 0px 6px 0px rgb(0, 0, 0, 0.7);
 }
 
 .login-box {
-    position: relative;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 100%;
-    transition: all 0.5s;
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  transition: all 0.5s;
 }
 
 .Guest-button {
-    border-radius: 5px;
-    width: 160px;
-    height: 42px;
-    border: 2px solid #2A3647;
-    font-size: 20px;
-    font-weight: bold;
-    background-color: white;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 5px;
+  border-radius: 5px;
+  width: 160px;
+  height: 42px;
+  border: 2px solid #2a3647;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
 }
 
 .Guest-button:hover {
-    color: #29ABE2;
-    border-color: #29ABE2;
-    box-shadow: -2px 0px 6px 0px rgb(0, 0, 0, 0.7);
+  color: #29abe2;
+  border-color: #29abe2;
+  box-shadow: -2px 0px 6px 0px rgb(0, 0, 0, 0.7);
 }
 
 .SignupButton {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: 75px;
-    right: 60px;
-    transition: all 0.5s;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 75px;
+  right: 60px;
+  transition: all 0.5s;
 }
 
 .SignupBtn {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 .capaAnimation {
-    animation: background-fade 1.2s ease-in-out;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 1;
-    transition: all 0.5s;
+  animation: background-fade 1.2s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  transition: all 0.5s;
 }
 
 .capaImg {
-    transform: translate(0px, 0px);
-    animation: logoAnimation 1.8s ease-in-out;
-    position: absolute;
-    top: 70px;
-    left: 70px;
-    transition: all 0.5s;
-    z-index: 20;
+  transform: translate(0px, 0px);
+  animation: logoAnimation 1.8s ease-in-out;
+  position: absolute;
+  top: 70px;
+  left: 70px;
+  transition: all 0.5s;
+  z-index: 20;
 }
 
 @keyframes logoAnimation {
-    from {
-        top: calc(100vh - 50%);
-        left: calc(100vw - 50%);
-        scale: 200%;
-    }
+  from {
+    top: calc(100vh - 50%);
+    left: calc(100vw - 50%);
+    scale: 200%;
+  }
 
-    to {
-        top: 70px;
-        left: 70px;
-    }
+  to {
+    top: 70px;
+    left: 70px;
+  }
 }
 
 @keyframes background-fade {
-    0% {
-        background: #ffffff;
-        z-index: 3;
-    }
+  0% {
+    background: #ffffff;
+    z-index: 3;
+  }
 
-    99% {
-        z-index: 3;
-    }
+  99% {
+    z-index: 3;
+  }
 
-    100% {
-        background: none;
-        z-index: 1;
-    }
+  100% {
+    background: none;
+    z-index: 1;
+  }
 }
 
 @keyframes buttonAnimation {
-    0% {
-        transform: translate(0px);
-        z-index: 5;
-    }
+  0% {
+    transform: translate(0px);
+    z-index: 5;
+  }
 
-    99% {
-        transform: translate(0px, -150px);
-        z-index: 5;
-    }
+  99% {
+    transform: translate(0px, -150px);
+    z-index: 5;
+  }
 
-    100% {
-        z-index: -5;
-    }
+  100% {
+    z-index: -5;
+  }
 }
 
 /* Login */
 
 /* Sign-up */
 .sign-up {
-    background-color: white;
-    height: fit-content;
-    width: 570px;
-    border-radius: 15px;
-    box-shadow: -2px 0px 6px 0px rgb(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 2;
-    padding-bottom: 20px;
-    transition: all 0.5s;
+  background-color: white;
+  height: fit-content;
+  width: 570px;
+  border-radius: 15px;
+  box-shadow: -2px 0px 6px 0px rgb(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  padding-bottom: 20px;
+  transition: all 0.5s;
 }
 
 .arrow-img {
-    position: relative;
-    margin-left: -55px;
-    cursor: pointer;
-    top: 60px;
-    transform: scale(0.85);
+  position: relative;
+  margin-left: -55px;
+  cursor: pointer;
+  top: 60px;
+  transform: scale(0.85);
 }
 
 .forgot-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .forgot-box img {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .arrow-img:hover {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 .d-none {
-    display: none;
+  display: none;
 }
 
 .footer {
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
-    width: 100%;
-    position: absolute;
-    gap: 30px;
-    margin-top: -70px;
-    z-index: 1;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  width: 100%;
+  position: absolute;
+  gap: 30px;
+  margin-top: -70px;
+  z-index: 1;
 }
 
 .footer a {
-    text-decoration: none;
-    color: #b0aeae;
+  text-decoration: none;
+  color: #b0aeae;
 }
 
 .footer a:hover {
-    transform: scale(1.1);
-    color: #29ABE2;
+  transform: scale(1.1);
+  color: #29abe2;
 }
 
 .popup {
-    color: white;
-    background-color: rgb(42, 54, 71);
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: none;
-    transition: top 0.5s ease-in-out;
-    top: -100px;
-    z-index: 10;
-    text-align: center;
+  color: white;
+  background-color: rgb(42, 54, 71);
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: none;
+  transition: top 0.5s ease-in-out;
+  top: -100px;
+  z-index: 10;
+  text-align: center;
 }
 
 .error-message {
-    position: fixed;
-    top: 38vh;
-    margin-left: -135px;
-    font-size: 14px;
-    color: rgb(227, 100, 100);
+  position: fixed;
+  top: 38vh;
+  margin-left: -135px;
+  font-size: 14px;
+  color: rgb(227, 100, 100);
 }
 
 .register-error-message {
-    position: absolute;
-    top: 46vh;
-    margin-left: -167px;
-    font-size: 14px;
-    color: rgb(227, 100, 100);
+  position: absolute;
+  top: 46vh;
+  margin-left: -167px;
+  font-size: 14px;
+  color: rgb(227, 100, 100);
 }
 
 .register-error-message-passwort {
-    position: absolute;
-    margin-top: -5px;
-    margin-left: -170px;
-    font-size: 14px;
-    color: rgb(227, 100, 100);
+  position: absolute;
+  margin-top: -5px;
+  margin-left: -170px;
+  font-size: 14px;
+  color: rgb(227, 100, 100);
 }
 
 .sign-up-privacy {
-    color: #29ABE2;
-    font-size: 15px;
-    cursor: pointer;
-    text-decoration: none;
-    margin-left: 6px;
-    margin-bottom: 1px;
+  color: #29abe2;
+  font-size: 15px;
+  cursor: pointer;
+  text-decoration: none;
+  margin-left: 6px;
+  margin-bottom: 1px;
 }
 
 .sign-up-privacy:hover {
-    transform: scale(1.1);
-    text-decoration: underline;
-
+  transform: scale(1.1);
+  text-decoration: underline;
 }
 
 /* Sign-up */
 
 .forgot-password-container {
-    background-color: white;
-    height: fit-content;
-    width: 570px;
-    border-radius: 15px;
-    box-shadow: -2px 0px 6px 0px rgb(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    z-index: 2;
-    padding-top: 25px;
-    padding-bottom: 25px;
+  background-color: white;
+  height: fit-content;
+  width: 570px;
+  border-radius: 15px;
+  box-shadow: -2px 0px 6px 0px rgb(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+  padding-top: 25px;
+  padding-bottom: 25px;
 }
 
 .password-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .password-btn {
-    border-radius: 5px;
-    height: 42px;
-    border: none;
-    font-size: 20px;
-    font-weight: bold;
-    background-color: #2A3647;
-    color: white;
-    margin-top: 30px;
-    cursor: pointer;
-    padding-left: 10px;
-    padding-right: 10px;
+  border-radius: 5px;
+  height: 42px;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #2a3647;
+  color: white;
+  margin-top: 30px;
+  cursor: pointer;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .password-btn:hover {
-    background-color: #29ABE2;
-    box-shadow: -2px 0px 6px 0px rgb(0, 0, 0, 0.7);
+  background-color: #29abe2;
+  box-shadow: -2px 0px 6px 0px rgb(0, 0, 0, 0.7);
 }
 
 .password-headline {
-    font-size: 40px;
-    margin: 0;
+  font-size: 40px;
+  margin: 0;
 }
 
 .password-span {
-    margin-top: 30px;
-    margin-bottom: 10px;
-    padding: 0px 50px 0px 50px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  padding: 0px 50px 0px 50px;
 }
 
 .password-arrow-img {
-    position: relative;
-    cursor: pointer;
+  position: relative;
+  cursor: pointer;
 }
 
 .password-arrow-img:hover {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 .privacy_policy a {
-    text-decoration: none;
-    color: #29ABE2;
-    font-size: 15px;
-    cursor: pointer;
+  text-decoration: none;
+  color: #29abe2;
+  font-size: 15px;
+  cursor: pointer;
 }
 
 .privacy_policy a:hover {
-    transform: scale(1.1);
-    text-decoration: underline;
+  transform: scale(1.1);
+  text-decoration: underline;
 }
 
 @media (max-width: 1000px) {
-    .capaImg {
-        top: 50px;
-        left: 50px;
-        width: 50px;
-        transition: all 0.5s;
+  .capaImg {
+    top: 50px;
+    left: 50px;
+    width: 50px;
+    transition: all 0.5s;
+  }
+
+  @keyframes logoAnimation {
+    from {
+      top: calc(100vh - 50%);
+      left: calc(100vw - 50%);
+      scale: 200%;
     }
 
-    @keyframes logoAnimation {
-        from {
-            top: calc(100vh - 50%);
-            left: calc(100vw - 50%);
-            scale: 200%;
-        }
-
-        to {
-            top: 50px;
-            left: 50px;
-        }
+    to {
+      top: 50px;
+      left: 50px;
     }
-
-
+  }
 }
 
 @media (max-width: 600px) {
+  .checkbox-sign-up {
+    margin-top: 310px;
+  }
 
-    .checkbox-sign-up {
-        margin-top: 310px;
-    }
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 14px;
+    width: 90%;
+  }
 
-    .form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 14px;
-        width: 90%;
-    }
+  .login-box {
+    flex-wrap: wrap;
+  }
 
-    .login-box {
-        flex-wrap: wrap;
-    }
+  .SignupButton {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 80px;
+    right: 0;
+    left: 0;
+    height: 0;
+    width: 100%;
+    gap: 17px;
+    transition: all 0.5s;
+    flex-wrap: wrap;
+  }
 
-    .SignupButton {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        top: 80px;
-        right: 0;
-        left: 0;
-        height: 0;
-        width: 100%;
-        gap: 17px;
-        transition: all 0.5s;
-        flex-wrap: wrap;
-    }
+  .footer {
+    margin-top: -30px;
+  }
 
-    .footer {
-        margin-top: -30px;
-    }
+  .SignupBtn {
+    margin-right: 0px;
+    transition: all 0.5s;
+  }
 
-    .SignupBtn {
-        margin-right: 0px;
-        transition: all 0.5s;
-    }
+  .login {
+    height: fit-content;
+    width: 100%;
+    margin-left: 5%;
+    margin-right: 5%;
+    transition: all 0.5s;
+  }
 
-    .login {
-        height: fit-content;
-        width: 100%;
-        margin-left: 5%;
-        margin-right: 5%;
-        transition: all 0.5s;
-    }
+  .sign-up {
+    height: fit-content;
+    width: 100%;
+    padding-bottom: 20px;
+    margin-left: 5%;
+    margin-right: 5%;
+    transition: all 0.5s;
+  }
 
-    .sign-up {
-        height: fit-content;
-        width: 100%;
-        padding-bottom: 20px;
-        margin-left: 5%;
-        margin-right: 5%;
-        transition: all 0.5s;
-    }
+  .forgot-password-container {
+    width: 100%;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
 
-    .forgot-password-container {
-        width: 100%;
-        margin-left: 5%;
-        margin-right: 5%;
-    }
-
-    .forgot-box {
-        margin: 0;
-        margin-left: 10px;
-    }
-
+  .forgot-box {
+    margin: 0;
+    margin-left: 10px;
+  }
 }
 
 @media (max-width: 440px) {
-    .none {
-        -webkit-transform: scale(0.85);
-        -moz-transform: scale(0.85);
-        -ms-transform: scale(0.85);
-        -o-transform: scale(0.85);
-        transform: scale(0.85);
+  .none {
+    -webkit-transform: scale(0.85);
+    -moz-transform: scale(0.85);
+    -ms-transform: scale(0.85);
+    -o-transform: scale(0.85);
+    transform: scale(0.85);
+  }
+
+  .checkbox-sign-up {
+    -webkit-transform: scale(0.85);
+    -moz-transform: scale(0.85);
+    -ms-transform: scale(0.85);
+    -o-transform: scale(0.85);
+    transform: scale(0.85);
+  }
+
+  .arrow-img {
+    margin-left: -40px;
+    top: 60px;
+    transform: scale(0.85);
+  }
+
+  .login-box {
+    gap: 15px;
+  }
+
+  .checkbox {
+    transition: all 0.5s;
+  }
+
+  .checkbox span {
+    font-size: 12px;
+  }
+
+  .password {
+    margin-left: 10px;
+  }
+
+  .password-login input {
+    width: 100%;
+  }
+
+  .email-login input {
+    width: 100%;
+  }
+
+  .login {
+    height: fit-content;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    transition: all 0.5s;
+  }
+
+  .register-error-message {
+    margin-left: -80px;
+  }
+
+  .register-error-message-passwort {
+    margin-left: -80px;
+  }
+
+  .capaImg {
+    top: 25px;
+    left: 25px;
+    width: 40px;
+    transition: all 0.5s;
+  }
+
+  @keyframes logoAnimation {
+    from {
+      top: calc(100vh - 50%);
+      left: calc(100vw - 50%);
+      scale: 200%;
     }
 
-    .checkbox-sign-up {
-        -webkit-transform: scale(0.85);
-        -moz-transform: scale(0.85);
-        -ms-transform: scale(0.85);
-        -o-transform: scale(0.85);
-        transform: scale(0.85);
+    to {
+      top: 25px;
+      left: 25px;
     }
+  }
 
-    .arrow-img {
-        margin-left: -40px;
-        top: 60px;
-        transform: scale(0.85);
-    }
-
-    .login-box {
-        gap: 15px;
-    }
-
-    .checkbox {
-        transition: all 0.5s;
-    }
-
-    .checkbox span {
-        font-size: 12px;
-    }
-
-    .password {
-        margin-left: 10px;
-    }
-
-
-    .password-login input {
-        width: 100%;
-
-    }
-
-    .email-login input {
-        width: 100%;
-    }
-
-    .login {
-        height: fit-content;
-        padding-top: 20px;
-        padding-bottom: 20px;
-        transition: all 0.5s;
-    }
-
-
-
-    .register-error-message {
-        margin-left: -80px;
-    }
-
-    .register-error-message-passwort {
-        margin-left: -80px;
-    }
-
-    .capaImg {
-        top: 25px;
-        left: 25px;
-        width: 40px;
-        transition: all 0.5s;
-    }
-
-    @keyframes logoAnimation {
-        from {
-            top: calc(100vh - 50%);
-            left: calc(100vw - 50%);
-            scale: 200%;
-        }
-
-        to {
-            top: 25px;
-            left: 25px;
-        }
-    }
-
-    .name-img {
-        background-position: calc(100% - 5px) 8px !important;
-    }
+  .name-img {
+    background-position: calc(100% - 5px) 8px !important;
+  }
 }
 
 @media (min-height: 600px) {
-    .landscape-stop{
-        display: none;
-    }
+  .landscape-stop {
+    display: none;
+  }
 }
 
 @media (max-height: 600px) {
-    .landscape-stop{
-        position: fixed;
-        overflow: hidden;
-        background-color: #6C757D;
-        z-index: 99 !important;
-        height: 100%;
-        width: 100%;
-        border-color: #2A3647;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+  .landscape-stop {
+    position: fixed;
+    overflow: hidden;
+    background-color: #6c757d;
+    z-index: 99 !important;
+    height: 100%;
+    width: 100%;
+    border-color: #2a3647;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

@@ -9,8 +9,21 @@ async function createNewContact() {
     showPopup("Cannot be created as a guest. Please create an account");
     closeNewContacts();
   } else {
-    await saveNewContact();
+    if (validateFormEmail()) {
+      await saveNewContact();
+    } else {
+      showPopup("Please enter the correct format for the email");
+    }
   }
+}
+
+function validateFormEmail() {
+  var emailInput = document.getElementById("popup-contact-email");
+  var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailPattern.test(emailInput.value)) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -67,7 +80,7 @@ async function saveNewContactValues(
   let newContact = {
     name: contactNameAlterd,
     email: contactEmail.value,
-    phone: contactPhone.value,
+    phone: contactPhone.innerHTML,
     logogram: logogram,
     hex_color: contactColor,
   };
@@ -160,11 +173,12 @@ async function deleteContacts(i) {
   } else {
     // deleteFromList(i);
     // contacts.splice(i, 1);
-    deleteContact(i);
-    renderContacts();
+    await deleteContact(i);
+    await downloadContact();
     closeNewContacts();
-    removeFromMainPage();
+    // removeFromMainPage();
     showPopup("Contact deleted");
+    renderContacts();
   }
 }
 
@@ -246,10 +260,12 @@ async function saveChangedContact(i) {
     }
     closeNewContacts();
   } else if (
-    document.getElementById("check-formvalidation-contacts").checkValidity()
+    document.getElementById("check-formvalidation-contacts").checkValidity() &&
+    validateFormEmail()
   ) {
     await saveChangedContactFunctions(i);
   } else {
+    showPopup("Please enter the correct format for the email");
     document.getElementById("check-formvalidation-contacts").reportValidity();
   }
 }
@@ -265,14 +281,16 @@ async function saveChangedContactFunctions(i) {
     contactName.value.charAt(0).toUpperCase() + contactName.value.slice(1);
   let logogram = getLogogram(contactNameAlterd);
   let contactColor = getContactColor();
-  await saveContactValues(
-    i,
-    contactEmail,
-    contactPhone,
-    contactNameAlterd,
+  let id = contacts[i].id;
+  await updateContact(
+    id,
+    contactEmail.value,
+    contactColor,
     logogram,
-    contactColor
+    contactNameAlterd,
+    contactPhone.value
   );
+
   renderContacts();
   resetForm(contactName, contactEmail, contactPhone);
   closeNewContacts();
@@ -293,31 +311,31 @@ async function saveChangedContactFunctions(i) {
  * @param {string} contactColor This variable is the color for the contacts icon
  */
 
-/**
- * This function saves a new contact
- *
- * @param {number} i
- * @param {string} contactEmail
- * @param {number} contactPhone
- * @param {string} contactNameAlterd
- * @param {string} logogram
- * @param {string} contactColor
- */
-async function saveContactValues(
-  i,
-  contactEmail,
-  contactPhone,
-  contactNameAlterd,
-  logogram,
-  contactColor
-) {
-  let newContact = {
-    name: contactNameAlterd,
-    email: contactEmail.value,
-    phone: contactPhone.value,
-    logogram: logogram,
-    hex_color: contactColor,
-  };
-  contacts.splice(i, 1, newContact);
-  await SaveInLocalStorageAndServer(user, contactsString, contacts);
-}
+// /**
+//  * This function saves a new contact
+//  *
+//  * @param {number} i
+//  * @param {string} contactEmail
+//  * @param {number} contactPhone
+//  * @param {string} contactNameAlterd
+//  * @param {string} logogram
+//  * @param {string} contactColor
+//  */
+// async function saveContactValues(
+//   i,
+//   contactEmail,
+//   contactPhone,
+//   contactNameAlterd,
+//   logogram,
+//   contactColor
+// ) {
+//   let newContact = {
+//     name: contactNameAlterd,
+//     email: contactEmail.value,
+//     phone: contactPhone.value,
+//     logogram: logogram,
+//     hex_color: contactColor,
+//   };
+//   contacts.splice(i, 1, newContact);
+//   await SaveInLocalStorageAndServer(user, contactsString, contacts);
+// }

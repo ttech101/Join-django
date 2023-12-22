@@ -95,29 +95,16 @@ function loadFromLocalStorageContacts() {
  * This function loads the logged in user. If the user is a guest, the guest user is loaded
  */
 async function loadUserData() {
-  if (sessionStorage.getItem("name") == null) {
-    user_name = "Guest";
+  if (sessionStorage.getItem("authToken") == null) {
+    user = null;
   } else {
     user_name = sessionStorage.getItem("name");
     user = true;
+    if (user_name == undefined) {
+      user_name = "Guest";
+    }
   }
-  // await SaveDataInLocalStorageFromServer(user, listString);
-  // await SaveDataInLocalStorageFromServer(user, contactsString);
 }
-
-// async function loadUserData() {
-//   let userAktiv = localStorage.getItem("user");
-//   let user_name_Aktiv = localStorage.getItem("name");
-//   if (userAktiv) {
-//     user = JSON.parse(userAktiv);
-//     user_name = JSON.parse(user_name_Aktiv);
-//     if (user_name == null) {
-//       user_name = "Guest";
-//     }
-//     // await SaveDataInLocalStorageFromServer(user, listString);
-//     // await SaveDataInLocalStorageFromServer(user, contactsString);
-//   }
-// }
 
 /**
  * This function deletes the local storage
@@ -126,12 +113,17 @@ function clearLocalStorage() {
   sessionStorage.clear();
 }
 
-async function sendContact(email, hex_color, logogram, name, phone_number) {
+function headerRequest() {
   var myHeaders = new Headers();
   myHeaders.append(
     "Authorization",
     "Token " + sessionStorage.getItem("authToken")
   );
+  return myHeaders;
+}
+
+async function sendContact(email, hex_color, logogram, name, phone_number) {
+  var myHeaders = headerRequest();
   var formdata = new FormData();
   formdata.append("email", email);
   formdata.append("hex_color", hex_color);
@@ -148,16 +140,14 @@ async function sendContact(email, hex_color, logogram, name, phone_number) {
 
   await fetch(STORAGE_URL + "contact/", requestOptions)
     .then((response) => response.text())
-    .then((result) => console.log(result))
+    // .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
+
+  await downloadContact();
 }
 
 async function downloadContact() {
-  var myHeaders = new Headers();
-  myHeaders.append(
-    "Authorization",
-    "Token " + sessionStorage.getItem("authToken")
-  );
+  var myHeaders = headerRequest();
 
   var requestOptions = {
     method: "GET",
@@ -168,22 +158,16 @@ async function downloadContact() {
   await fetch(STORAGE_URL + "contact/", requestOptions)
     .then((response) => response.json())
     .then((result) => {
-      console.log(result);
       let contact = JSON.stringify(result);
+      contacts = result;
       sessionStorage.setItem("contacts", contact);
     })
     .catch((error) => console.log("error", error));
 }
 
-function deleteContact(i) {
+async function deleteContact(i) {
+  var myHeaders = headerRequest();
   id = contacts[i].id;
-  console.log(id);
-  var myHeaders = new Headers();
-  var myHeaders = new Headers();
-  myHeaders.append(
-    "Authorization",
-    "Token " + sessionStorage.getItem("authToken")
-  );
 
   var requestOptions = {
     method: "DELETE",
@@ -192,8 +176,174 @@ function deleteContact(i) {
     redirect: "follow",
   };
 
-  fetch(STORAGE_URL + "contact/" + id + "/", requestOptions)
+  await fetch(STORAGE_URL + "contact/" + id + "/", requestOptions)
+    .then((response) => response.text())
+    // .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
+}
+
+async function updateContact(
+  id,
+  email,
+  hex_color,
+  logogram,
+  name,
+  phone_number
+) {
+  var myHeaders = headerRequest();
+  var formdata = new FormData();
+  formdata.append("email", email);
+  formdata.append("hex_color", hex_color);
+  formdata.append("logogram", logogram);
+  formdata.append("name", name);
+  formdata.append("phone_number", phone_number);
+
+  var requestOptions = {
+    method: "PUT",
+    headers: myHeaders,
+    body: formdata,
+    redirect: "follow",
+  };
+
+  await fetch(STORAGE_URL + "contact/" + id + "/", requestOptions)
+    .then((response) => response.text())
+    // .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
+
+  await downloadContact();
+}
+
+async function sendTask(
+  headline,
+  text,
+  task_user,
+  date,
+  category,
+  idBox,
+  task_board
+) {
+  let subtask = checkSubTask();
+  var myHeaders = headerRequest();
+  var formdata = new FormData();
+  formdata.append("idBox", idBox);
+  formdata.append("headline", headline.value);
+  formdata.append("text", text.value);
+  formdata.append("date", date.value);
+  formdata.append("priority", taskPrio);
+  formdata.append("category", category);
+  formdata.append("subtasks", subtask);
+  formdata.append("task_user", task_user);
+  formdata.append("task_board", task_board);
+
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: formdata,
+    redirect: "follow",
+  };
+
+  await fetch(STORAGE_URL + "task/", requestOptions)
+    .then((response) => response.text())
+    //.then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
+
+  await downloadTask();
+}
+
+function checkSubTask() {
+  return JSON.stringify(subtasks);
+}
+
+async function downloadTask() {
+  var myHeaders = headerRequest();
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  await fetch(STORAGE_URL + "task/", requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      let jsonTask = JSON.stringify(result);
+      list = result;
+      sessionStorage.setItem("tasks", jsonTask);
+    })
+    .catch((error) => console.log("error", error));
+}
+
+async function deleteTasks(id) {
+  var myHeaders = headerRequest();
+  var requestOptions = {
+    method: "DELETE",
+    headers: myHeaders,
+    body: "",
+    redirect: "follow",
+  };
+
+  await fetch(STORAGE_URL + "task/" + id + "/", requestOptions)
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
+
+  await downloadTask();
+}
+
+async function updateTask(
+  headline,
+  text,
+  task_user,
+  date,
+  category,
+  idBox,
+  task_board,
+  id
+) {
+  let subtask = checkSubTask();
+  var myHeaders = headerRequest();
+  var formdata = new FormData();
+  formdata.append("idBox", idBox);
+  formdata.append("headline", headline);
+  formdata.append("text", text);
+  formdata.append("date", date);
+  formdata.append("priority", taskPrio);
+  formdata.append("category", category);
+  formdata.append("subtasks", subtask);
+  formdata.append("task_user", task_user);
+  formdata.append("task_board", task_board);
+
+  var requestOptions = {
+    method: "PUT",
+    headers: myHeaders,
+    body: formdata,
+    redirect: "follow",
+  };
+
+  await fetch(STORAGE_URL + "task/" + id + "/", requestOptions)
+    .then((response) => response.text())
+    // .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
+
+  await downloadTask();
+}
+
+function deleteUser() {
+  let token = "Token " + sessionStorage.getItem("authToken");
+  fetch(STORAGE_URL + "delete_current_user/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        console.log("Benutzer erfolgreich gelöscht");
+      } else {
+        console.error(`Fehler beim Löschen des Benutzers: ${data.error}`);
+      }
+    })
+    .catch((error) => console.error("Fehler beim Senden des Requests:", error));
 }

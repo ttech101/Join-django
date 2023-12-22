@@ -122,8 +122,8 @@ async function processRegistration() {
 
   //   await setItem("users", JSON.stringify(users));
   //   await loadStandardUserListAndContacts(email.value, name.value);
-  // showPopupAndRedirect("You have successfully registered.", "index.html");
-  //   resetFormValue();
+  showPopupAndRedirect("You have successfully registered.", "index.html");
+  resetFormValue();
 }
 
 async function checkLoginUser(email, password) {}
