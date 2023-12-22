@@ -127,35 +127,9 @@
                 <div class="password-span">
                     <span>Enter your email address to change your password.</span>
                 </div>
-                <form class="password-container email-login" onsubmit=" handleForgotPasswordFormSubmit(); return false">
+                <form class="password-container email-login" onsubmit=" forgetPassword(); return false">
                     <input id="passwordEmail" required class="mail-img" type="email" placeholder="Email" name="email" />
                     <button class="password-btn" type="submit">Change password</button>
-                </form>
-            </div>
-
-            <div id="password-container" class="forgot-password-container d-none">
-                <div>
-                    <img onclick="showSignUpHideSignUp('hide')" class="password-arrow-img"
-                        src="img/arrow-left-line.svg" />
-                    <h1 class="password-headline">Reset your password</h1>
-                </div>
-                <div>
-                    <img class="VectorImg" src="img/Vector 5.svg" />
-                </div>
-                <div style="margin-top: 17px" class="password-span">
-                    <span>Change your account password</span>
-                </div>
-                <form class="password-container email-login">
-                    <span id="register-error2" class="register-error-message-passwort" style="display: none">Your
-                        password
-                        does notmatch.</span>
-                    <input id="ForgotPassword1" style="margin-bottom: 12px" required class="password-img"
-                        type="password" placeholder="Password" minlength="4" />
-                    <input id="ForgotPassword2" required class="password-img" type="password" placeholder="Password"
-                        minlength="4" />
-                    <button class="password-btn" type="submit" onclick="changePassword(); return false">
-                        Save new password
-                    </button>
                 </form>
             </div>
         </div>

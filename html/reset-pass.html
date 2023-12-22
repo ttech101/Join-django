@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/fonts.css" />
+    <link rel="icon" href="./img/Logo_for_Favicon.png" />
+    <script src="../js/script.js"></script>
+    <script src="../js/register.js"></script>
+    <script src="../js/storage.js"></script>
+    <script src="../js/login.js"></script>
+    <script src="../js/includeHTML.js"></script>
+    <script src="../js/contacts_page.js"></script>
+    <script src="../js/contacts.js"></script>
+  </head>
+
+  <body>
+    <div class="begin">
+      <div class="capaAnimation">
+        <img onclick="openPage('/index.html')" style="cursor: pointer;" class="capaImg" src="../img/Capa 1.svg" />
+      </div>
+      <div id="password-container" class="forgot-password-container">
+        <div>
+          <h1 class="password-headline">Reset your password</h1>
+        </div>
+        <div>
+          <img class="VectorImg" src="../img/Vector 5.svg" />
+        </div>
+        <div style="margin-top: 17px" class="password-span">
+          <span>Change your account password</span>
+        </div>
+        <form class="password-container email-login">
+          <span id="register-error2" class="register-error-message-passwort" style="display: none">Your
+            password
+            does notmatch.</span>
+          <input id="ForgotPassword1" style="margin-bottom: 12px" required class="password-img" type="password"
+            placeholder="Password" minlength="4" />
+          <input id="ForgotPassword2" required class="password-img" type="password" placeholder="Password"
+            minlength="4" />
+          <button class="password-btn" type="submit" onclick="changePassword(); return false">
+            Save new password
+          </button>
+        </form>
+      </div>
+    </div>
+    <input type="checkbox" id="privacyPolicyCheckbox" style="display: none" />
+
+    <div class="footer">
+      <a href="./html/privacy_policy.html">Privacy Policy</a>
+      <a href="./html/legal_notice.html">Legal notice</a>
+    </div>
+  </body>
+
+</html>

@@ -87,17 +87,19 @@ function validateRegistrationFields() {
  * @returns {Promise<void>}
  */
 async function processRegistration() {
+  var splitNameResult = splitName(
+    document.getElementById("nameregister").value
+  );
   let email = document.getElementById("emailregister").value;
   let password1 = document.getElementById("passwordregister1").value;
   let password2 = document.getElementById("passwordregister2").value;
-  let name = document.getElementById("nameregister").value;
   let registerBtn = document.getElementById("registerBtn");
   registerBtn.disabled = true;
 
   var formdata = new FormData();
-  formdata.append("username", name);
-  formdata.append("first_name", name);
-  formdata.append("last_name", name);
+  formdata.append("username", email);
+  formdata.append("first_name", splitNameResult.firstName);
+  formdata.append("last_name", splitNameResult.lastName);
   formdata.append("password1", password1);
   formdata.append("email", email);
   formdata.append("password2", password2);
@@ -122,7 +124,10 @@ async function processRegistration() {
 
   //   await setItem("users", JSON.stringify(users));
   //   await loadStandardUserListAndContacts(email.value, name.value);
-  showPopupAndRedirect("You have successfully registered.", "index.html");
+  showPopupAndRedirect(
+    "You have successfully registered. Please check your email!",
+    "index.html"
+  );
   resetFormValue();
 }
 
@@ -180,15 +185,42 @@ function addUserToContacts(user, name, new_contact) {
 async function changePassword() {
   if (validatePasswords()) {
     let password = document.getElementById("ForgotPassword1").value;
-    for (let i = 0; i < users.length; i++) {
-      const element = users[i];
-      if (element.email == user.email) {
-        element.password = password;
-      }
-      await setItem("users", JSON.stringify(users));
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 2000);
-    }
+    sendPasswordChangeRequest(password);
+    setTimeout(() => {
+      console.log("geht hier was");
+      window.location.href = "../index.html";
+    }, 2000);
   }
+}
+
+function forgetPassword() {
+  var email = document.getElementById("passwordEmail").value;
+  console.log(email);
+
+  // Sende die E-Mail-Adresse an den Server
+  fetch(STORAGE_URL + "reset_password/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email: email }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      // Verarbeite die Serverantwort (z. B. zeige eine Erfolgsmeldung an)
+      console.log("Serverantwort:", data);
+    })
+    .catch((error) => {
+      // Verarbeite Fehler (z. B. zeige eine Fehlermeldung an)
+      console.error("Fehler:", error);
+    });
+}
+
+function splitName(fullName) {
+  var nameParts = fullName.split(" ");
+
+  var firstName = nameParts[0];
+  var lastName = nameParts.slice(1).join(" "); // The last name might contain more than one word
+
+  return { firstName, lastName };
 }

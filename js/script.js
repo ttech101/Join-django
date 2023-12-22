@@ -28,11 +28,11 @@ function showSignUpHideSignUp(action) {
     document.getElementById("sign-up").classList.remove("d-none");
     document.getElementById("login").classList.add("d-none");
   } else if (action === "hide") {
+    console.log("hier?");
     document.getElementById("sign-up").classList.add("d-none");
     document
       .getElementById("forgot-password-container")
       .classList.add("d-none");
-    document.getElementById("password-container").classList.add("d-none");
     document.getElementById("login").classList.remove("d-none");
   }
 }
@@ -48,7 +48,6 @@ function showForgotPassword(mode) {
       .classList.remove("d-none");
     document.getElementById("login").classList.add("d-none");
   } else if (mode === "reset") {
-    document.getElementById("password-container").classList.remove("d-none");
     document
       .getElementById("forgot-password-container")
       .classList.add("d-none");

@@ -64,3 +64,44 @@ async function checkLoginUser(email, password) {
     })
     .catch((error) => console.log("Server failed", error));
 }
+
+// Funktion zum Extrahieren des Tokens aus der URL
+function extractTokenFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("token");
+}
+
+// Funktion zum Senden der POST-Anfrage mit dem Token
+function sendPasswordChangeRequest(newPassword) {
+  const token = extractTokenFromURL();
+
+  if (!token) {
+    console.error("Token not found in the URL");
+    return;
+  }
+
+  const apiUrl = STORAGE_URL + "change_password/";
+
+  // Daten für die POST-Anfrage
+  const data = {
+    token: token,
+    password: newPassword,
+  };
+
+  // Senden der POST-Anfrage mit Fetch
+  fetch(apiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log(result);
+      // Hier kannst du entsprechend auf die Antwort reagieren
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
