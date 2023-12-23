@@ -17,6 +17,12 @@ async function createNewContact() {
   }
 }
 
+/**
+ * Validates the email input in a form using a regular expression pattern.
+ *
+ * @function
+ * @returns {boolean} Returns true if the email input is valid, otherwise false.
+ */
 function validateFormEmail() {
   var emailInput = document.getElementById("popup-contact-email");
   var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -37,7 +43,6 @@ async function saveNewContact() {
     contactName = sessionStorage.name + " (me)";
     contactEmail = sessionStorage.contacts.email;
   }
-  console.log("tste");
   let contactNameAlterd =
     contactName.value.charAt(0).toUpperCase() + contactName.value.slice(1);
   let logogram = getLogogram(contactNameAlterd);
@@ -89,8 +94,6 @@ async function saveNewContactValues(
     logogram: logogram,
     hex_color: contactColor,
   };
-  // contacts.push(newContact);
-  // await SaveInLocalStorageAndServer(user, contactsString, contacts);
   await sendContact(
     contactEmail.value,
     contactColor,
@@ -295,7 +298,6 @@ async function saveChangedContactFunctions(i) {
     contactNameAlterd,
     contactPhone.value
   );
-
   renderContacts();
   resetForm(contactName, contactEmail, contactPhone);
   closeNewContacts();

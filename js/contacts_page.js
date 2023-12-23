@@ -35,8 +35,6 @@ let hexColors = [
   "#62F3E5",
 ]; // Variable for contact icon
 
-// show contacts list on the side
-
 /**
  * This function starts all the necessary functions to run the contacts.html
  */

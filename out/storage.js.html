@@ -26,111 +26,417 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const STORAGE_TOKEN = 'TOU51R21M1ZJUBNEVP1Q5YFN1UVMEURVYQ27V9AJ';           //The tocken to the server storage
-const STORAGE_URL = 'https://remote-storage.developerakademie.org/item';    //The URL to the server storage
-let user;                                                                   // Creation of users variable
-let list;                                                                   //Creation of list variable
-let contacts;                                                               //Creation of contact variable
-let listString = 'list';                                                    //Creation of liststring variable
-let contactsString = 'contacts';                                            //Creation of contactstring variable
-
+            <pre class="prettyprint source linenums"><code>const STORAGE_URL = "http://localhost:8000/";
+let user; // Creation of users variable
+let list; //Creation of list variable
+let contacts; //Creation of contact variable
+let listString = "list"; //Creation of liststring variable
+let contactsString = "contacts"; //Creation of contactstring variable
 
 /**
  * This function saves data on the server under a key
- * 
+ *
  * @param {String} key  Key for storing
  * @param {JSON} value  JSON to key
  * @returns             returns a status
  */
 async function setItem(key, value) {
-    const payload = { key, value, token: STORAGE_TOKEN };
-    return fetch(STORAGE_URL, { method: 'POST', body: JSON.stringify(payload) })
-        .then(res => res.json());
+  const payload = { key, value, token: STORAGE_TOKEN };
+  return fetch(STORAGE_URL, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  }).then((res) => res.json());
 }
 
 /**
  * This function loads data from the server. The key must be set here
- * 
+ *
  * @param {String} key   Key for storing
  * @returns         return a JSON
  */
 async function getItem(key) {
-    const url = `${STORAGE_URL}?key=${key}&amp;token=${STORAGE_TOKEN}`;
-    return fetch(url).then(res => res.json()).then(res => {
-        if (res.data) {
-            return res.data.value;
-        } throw `${key} not found`;
+  const url = `${STORAGE_URL}?key=${key}&amp;token=${STORAGE_TOKEN}`;
+  return fetch(url)
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data.value;
+      }
+      throw `${key} not found`;
     });
 }
 
 /**
  * This function saves the user data in the local storage and on the server
- * 
- * @param {String} users        User
- * @param {String} keyString    key as string
- */
-async function SaveDataInLocalStorageFromServer(users, keyString) {
-    let data = await JSON.parse(await getItem(users + `-${keyString}`));
-    let dataAsText = JSON.stringify(data);
-    localStorage.setItem(keyString, dataAsText);
-}
-
-/**
- * This function saves the user data in the local storage and on the server
- * 
+ *
  * @param {String} users        User
  * @param {String} keyString    key as string
  * @param {String} dataObject   dataobject as string
  */
-async function SaveInLocalStorageAndServer(users, keyString, dataObject) {
-    let dataAsText = JSON.stringify(dataObject); // variable list or contacts 
-    localStorage.setItem(keyString, dataAsText);
-    await setItem(users + `-${keyString}`, dataObject);
+async function SaveInLocalStorageAndServer(keyString, dataObject) {
+  let dataAsText = JSON.stringify(dataObject); // variable list or contacts
+  sessionStorage.setItem(keyString, dataAsText);
 }
 
 /**
  * This function loads the tasks data
  */
 function loadFromLocalStorage() {
-    let listAsText = localStorage.getItem('list');
-    if (listAsText) {
-        list = JSON.parse(listAsText);
-    }
+  let listAsText = sessionStorage.getItem("tasks");
+  if (listAsText) {
+    list = JSON.parse(listAsText);
+  }
 }
 
 /**
  * This function loads the contact data
  */
 function loadFromLocalStorageContacts() {
-    let dataAsText = localStorage.getItem('contacts');
-    if (dataAsText) {
-        contacts = JSON.parse(dataAsText);
-    }
+  let dataAsText = sessionStorage.getItem("contacts");
+  if (dataAsText) {
+    contacts = JSON.parse(dataAsText);
+  }
 }
 
 /**
  * This function loads the logged in user. If the user is a guest, the guest user is loaded
  */
 async function loadUserData() {
-    let userAktiv = localStorage.getItem('user');
-    let user_name_Aktiv = localStorage.getItem('name');
-    if (userAktiv) {
-        user = JSON.parse(userAktiv);
-        user_name = JSON.parse(user_name_Aktiv);
-        if (user_name == null) {
-            user_name = 'Guest'
-        }
-        await SaveDataInLocalStorageFromServer(user, listString);
-        await SaveDataInLocalStorageFromServer(user, contactsString);
+  if (sessionStorage.getItem("authToken") == null) {
+    user = null;
+  } else {
+    user_name = sessionStorage.getItem("name");
+    user = true;
+    if (user_name == undefined) {
+      user_name = "Guest";
     }
+  }
 }
 
 /**
  * This function deletes the local storage
  */
 function clearLocalStorage() {
-    localStorage.clear();
-}</code></pre>
+  sessionStorage.clear();
+}
+
+function headerRequest() {
+  var myHeaders = new Headers();
+  myHeaders.append(
+    "Authorization",
+    "Token " + sessionStorage.getItem("authToken")
+  );
+  return myHeaders;
+}
+
+/**
+ * Asynchronously sends contact information to the server and triggers a download of updated contact data.
+ *
+ * @function
+ * @async
+ * @param {string} email - The email address of the contact.
+ * @param {string} hex_color - The hexadecimal color code associated with the contact.
+ * @param {File} logogram - The logogram file representing the contact.
+ * @param {string} name - The name of the contact.
+ * @param {string} phone_number - The phone number of the contact.
+ * @returns {Promise&lt;void>} A promise that resolves after sending the contact information and downloading updated contact data.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
+async function sendContact(email, hex_color, logogram, name, phone_number) {
+  var myHeaders = headerRequest();
+  var formdata = new FormData();
+  formdata.append("email", email);
+  formdata.append("hex_color", hex_color);
+  formdata.append("logogram", logogram);
+  formdata.append("name", name);
+  formdata.append("phone_number", phone_number);
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: formdata,
+    redirect: "follow",
+  };
+  await fetch(STORAGE_URL + "contact/", requestOptions)
+    .then((response) => response.text())
+    .catch((error) => console.log("error", error));
+  await downloadContact();
+}
+
+/**
+ * Asynchronously downloads contact data from the server and updates the session storage.
+ *
+ * @function
+ * @async
+ * @returns {Promise&lt;void>} A promise that resolves after downloading and updating contact data.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
+async function downloadContact() {
+  var myHeaders = headerRequest();
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  await fetch(STORAGE_URL + "contact/", requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      let contact = JSON.stringify(result);
+      contacts = result;
+      sessionStorage.setItem("contacts", contact);
+    })
+    .catch((error) => console.log("error", error));
+}
+
+/**
+ * Asynchronously deletes a contact from the server based on the provided index.
+ *
+ * @function
+ * @async
+ * @param {number} i - The index of the contact to be deleted.
+ * @returns {Promise&lt;void>} A promise that resolves after successfully deleting the contact.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
+async function deleteContact(i) {
+  var myHeaders = headerRequest();
+  id = contacts[i].id;
+
+  var requestOptions = {
+    method: "DELETE",
+    headers: myHeaders,
+    body: "",
+    redirect: "follow",
+  };
+  await fetch(STORAGE_URL + "contact/" + id + "/", requestOptions)
+    .then((response) => response.text())
+    .catch((error) => console.log("error", error));
+}
+
+/**
+ * Asynchronously updates a contact on the server with the provided information.
+ *
+ * @function
+ * @async
+ * @param {number} id - The ID of the contact to be updated.
+ * @param {string} email - The updated email address of the contact.
+ * @param {string} hex_color - The updated hexadecimal color code associated with the contact.
+ * @param {File} logogram - The updated logogram file representing the contact.
+ * @param {string} name - The updated name of the contact.
+ * @param {string} phone_number - The updated phone number of the contact.
+ * @returns {Promise&lt;void>} A promise that resolves after successfully updating the contact and downloading updated contact data.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
+async function updateContact(
+  id,
+  email,
+  hex_color,
+  logogram,
+  name,
+  phone_number
+) {
+  var myHeaders = headerRequest();
+  var formdata = new FormData();
+  formdata.append("email", email);
+  formdata.append("hex_color", hex_color);
+  formdata.append("logogram", logogram);
+  formdata.append("name", name);
+  formdata.append("phone_number", phone_number);
+  var requestOptions = {
+    method: "PUT",
+    headers: myHeaders,
+    body: formdata,
+    redirect: "follow",
+  };
+  await fetch(STORAGE_URL + "contact/" + id + "/", requestOptions)
+    .then((response) => response.text())
+    .catch((error) => console.log("error", error));
+  await downloadContact();
+}
+
+/**
+ * Asynchronously sends a new task to the server with the provided information.
+ *
+ * @function
+ * @async
+ * @param {string} headline - The headline or title of the task.
+ * @param {string} text - The description or details of the task.
+ * @param {string} task_user - The user assigned to the task.
+ * @param {string} date - The due date of the task.
+ * @param {string} category - The category or type of the task.
+ * @param {string} idBox - The ID of the task box associated with the task.
+ * @param {string} task_board - The task board to which the task belongs.
+ * @returns {Promise&lt;void>} A promise that resolves after successfully sending the new task and downloading updated task data.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
+async function sendTask(
+  headline,
+  text,
+  task_user,
+  date,
+  category,
+  idBox,
+  task_board
+) {
+  let subtask = checkSubTask();
+  var myHeaders = headerRequest();
+  var formdata = new FormData();
+  formdata.append("idBox", idBox);
+  formdata.append("headline", headline.value);
+  formdata.append("text", text.value);
+  formdata.append("date", date.value);
+  formdata.append("priority", taskPrio);
+  formdata.append("category", category);
+  formdata.append("subtasks", subtask);
+  formdata.append("task_user", task_user);
+  formdata.append("task_board", task_board);
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: formdata,
+    redirect: "follow",
+  };
+  await fetch(STORAGE_URL + "task/", requestOptions)
+    .then((response) => response.text())
+    .catch((error) => console.log("error", error));
+  await downloadTask();
+}
+
+/**
+ * Converts an array of subtasks to a JSON string.
+ *
+ * @function
+ * @returns {string} A JSON string representing the array of subtasks.
+ */
+function checkSubTask() {
+  return JSON.stringify(subtasks);
+}
+
+/**
+ * Asynchronously downloads task data from the server and updates the session storage.
+ *
+ * @function
+ * @async
+ * @returns {Promise&lt;void>} A promise that resolves after downloading and updating task data.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
+async function downloadTask() {
+  var myHeaders = headerRequest();
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+  await fetch(STORAGE_URL + "task/", requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      let jsonTask = JSON.stringify(result);
+      list = result;
+      sessionStorage.setItem("tasks", jsonTask);
+    })
+    .catch((error) => console.log("error", error));
+}
+
+/**
+ * Asynchronously deletes a task from the server based on the provided ID.
+ *
+ * @function
+ * @async
+ * @param {number} id - The ID of the task to be deleted.
+ * @returns {Promise&lt;void>} A promise that resolves after successfully deleting the task and downloading updated task data.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
+async function deleteTasks(id) {
+  var myHeaders = headerRequest();
+  var requestOptions = {
+    method: "DELETE",
+    headers: myHeaders,
+    body: "",
+    redirect: "follow",
+  };
+  await fetch(STORAGE_URL + "task/" + id + "/", requestOptions)
+    .then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
+  await downloadTask();
+}
+
+/**
+ * Asynchronously updates a task on the server with the provided information.
+ *
+ * @function
+ * @async
+ * @param {string} headline - The updated headline or title of the task.
+ * @param {string} text - The updated description or details of the task.
+ * @param {string} task_user - The updated user assigned to the task.
+ * @param {string} date - The updated due date of the task.
+ * @param {string} category - The updated category or type of the task.
+ * @param {string} idBox - The updated ID of the task box associated with the task.
+ * @param {string} task_board - The updated task board to which the task belongs.
+ * @param {number} id - The ID of the task to be updated.
+ * @returns {Promise&lt;void>} A promise that resolves after successfully updating the task and downloading updated task data.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
+async function updateTask(
+  headline,
+  text,
+  task_user,
+  date,
+  category,
+  idBox,
+  task_board,
+  id
+) {
+  let subtask = checkSubTask();
+  var myHeaders = headerRequest();
+  var formdata = new FormData();
+  formdata.append("idBox", idBox);
+  formdata.append("headline", headline);
+  formdata.append("text", text);
+  formdata.append("date", date);
+  formdata.append("priority", taskPrio);
+  formdata.append("category", category);
+  formdata.append("subtasks", subtask);
+  formdata.append("task_user", task_user);
+  formdata.append("task_board", task_board);
+  var requestOptions = {
+    method: "PUT",
+    headers: myHeaders,
+    body: formdata,
+    redirect: "follow",
+  };
+  await fetch(STORAGE_URL + "task/" + id + "/", requestOptions)
+    .then((response) => response.text())
+    .catch((error) => console.log("error", error));
+  await downloadTask();
+}
+
+/**
+ * Deletes the current user account on the server.
+ *
+ * @function
+ * @returns {void}
+ */
+function deleteUser() {
+  let token = "Token " + sessionStorage.getItem("authToken");
+  fetch(STORAGE_URL + "delete_current_user/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        console.log("Benutzer erfolgreich gelöscht");
+      } else {
+        console.error(`Fehler beim Löschen des Benutzers: ${data.error}`);
+      }
+    })
+    .catch((error) => console.error("Fehler beim Senden des Requests:", error));
+}
+</code></pre>
         </article>
     </section>
 
@@ -140,13 +446,13 @@ function clearLocalStorage() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GreetingAfterTime">GreetingAfterTime</a></li><li><a href="global.html#OneStartexecuteOnScreenWidthChange">OneStartexecuteOnScreenWidthChange</a></li><li><a href="global.html#SaveDataInLocalStorageFromServer">SaveDataInLocalStorageFromServer</a></li><li><a href="global.html#SaveInLocalStorageAndServer">SaveInLocalStorageAndServer</a></li><li><a href="global.html#addGuestTask">addGuestTask</a></li><li><a href="global.html#addStart">addStart</a></li><li><a href="global.html#addUserToContacts">addUserToContacts</a></li><li><a href="global.html#allowDrop">allowDrop</a></li><li><a href="global.html#autoSrcoll">autoSrcoll</a></li><li><a href="global.html#backToContactsList">backToContactsList</a></li><li><a href="global.html#calcCounterAllTasks">calcCounterAllTasks</a></li><li><a href="global.html#calcCounterTasks">calcCounterTasks</a></li><li><a href="global.html#calcPositionTasks">calcPositionTasks</a></li><li><a href="global.html#calcPositionTasksAwaitFeedback">calcPositionTasksAwaitFeedback</a></li><li><a href="global.html#calcPositionTasksDone">calcPositionTasksDone</a></li><li><a href="global.html#calcPositionTasksInProgess">calcPositionTasksInProgess</a></li><li><a href="global.html#calcPositionTasksToDo">calcPositionTasksToDo</a></li><li><a href="global.html#changeBoardAttribute">changeBoardAttribute</a></li><li><a href="global.html#changeBoardDetailCard">changeBoardDetailCard</a></li><li><a href="global.html#changeBoardStyle">changeBoardStyle</a></li><li><a href="global.html#changePassword">changePassword</a></li><li><a href="global.html#changeTask">changeTask</a></li><li><a href="global.html#changeToSubText">changeToSubText</a></li><li><a href="global.html#changeUsersInTask">changeUsersInTask</a></li><li><a href="global.html#checkContactsListLetter">checkContactsListLetter</a></li><li><a href="global.html#checkTouchEnd">checkTouchEnd</a></li><li><a href="global.html#checkUserEmail">checkUserEmail</a></li><li><a href="global.html#checkUserLogin">checkUserLogin</a></li><li><a href="global.html#clacDateUrgent">clacDateUrgent</a></li><li><a href="global.html#clearLocalStorage">clearLocalStorage</a></li><li><a href="global.html#closeAssignedToField">closeAssignedToField</a></li><li><a href="global.html#closeBoardCard">closeBoardCard</a></li><li><a href="global.html#closeNewContacts">closeNewContacts</a></li><li><a href="global.html#createAddTask">createAddTask</a></li><li><a href="global.html#createAllTaskCounter">createAllTaskCounter</a></li><li><a href="global.html#createAssignedToBt">createAssignedToBt</a></li><li><a href="global.html#createBoardCardSubtaks">createBoardCardSubtaks</a></li><li><a href="global.html#createBoardCardUsers">createBoardCardUsers</a></li><li><a href="global.html#createBoardSubtasks">createBoardSubtasks</a></li><li><a href="global.html#createBoardTasks">createBoardTasks</a></li><li><a href="global.html#createBoardUsers">createBoardUsers</a></li><li><a href="global.html#createBoradCard">createBoradCard</a></li><li><a href="global.html#createBordCardSubtasks">createBordCardSubtasks</a></li><li><a href="global.html#createBordCardUsers">createBordCardUsers</a></li><li><a href="global.html#createContactsHTML">createContactsHTML</a></li><li><a href="global.html#createContactsListLetters">createContactsListLetters</a></li><li><a href="global.html#createHeaderName">createHeaderName</a></li><li><a href="global.html#createInputText">createInputText</a></li><li><a href="global.html#createNewContact">createNewContact</a></li><li><a href="global.html#createNewTask">createNewTask</a></li><li><a href="global.html#createPopupContact">createPopupContact</a></li><li><a href="global.html#createPopupExistContactBt">createPopupExistContactBt</a></li><li><a href="global.html#createPopupExistContactIcon">createPopupExistContactIcon</a></li><li><a href="global.html#createSglContactHTML">createSglContactHTML</a></li><li><a href="global.html#defineNewTask">defineNewTask</a></li><li><a href="global.html#deleteContacts">deleteContacts</a></li><li><a href="global.html#deleteFromList">deleteFromList</a></li><li><a href="global.html#deleteInputText">deleteInputText</a></li><li><a href="global.html#deleteSubtask">deleteSubtask</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#editSubtask">editSubtask</a></li><li><a href="global.html#editTask">editTask</a></li><li><a href="global.html#empty_box">empty_box</a></li><li><a href="global.html#executeOnScreenWidthChange">executeOnScreenWidthChange</a></li><li><a href="global.html#filterTaskBoard">filterTaskBoard</a></li><li><a href="global.html#formatDateUrgent">formatDateUrgent</a></li><li><a href="global.html#generateTaskData">generateTaskData</a></li><li><a href="global.html#getAssignedToUsers">getAssignedToUsers</a></li><li><a href="global.html#getAssignedToUsersEditTask">getAssignedToUsersEditTask</a></li><li><a href="global.html#getContactColor">getContactColor</a></li><li><a href="global.html#getCurrentDate">getCurrentDate</a></li><li><a href="global.html#getFreeIdIndex">getFreeIdIndex</a></li><li><a href="global.html#getIdIndex">getIdIndex</a></li><li><a href="global.html#getIndexTaskEdit">getIndexTaskEdit</a></li><li><a href="global.html#getItem">getItem</a></li><li><a href="global.html#getLogogram">getLogogram</a></li><li><a href="global.html#getTaskBoardField">getTaskBoardField</a></li><li><a href="global.html#getTaskCategory">getTaskCategory</a></li><li><a href="global.html#handleForgotPasswordFormSubmit">handleForgotPasswordFormSubmit</a></li><li><a href="global.html#highlight">highlight</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initAddTask">initAddTask</a></li><li><a href="global.html#initBoard">initBoard</a></li><li><a href="global.html#initContacts">initContacts</a></li><li><a href="global.html#initHelp">initHelp</a></li><li><a href="global.html#initsummary">initsummary</a></li><li><a href="global.html#insertInputValues">insertInputValues</a></li><li><a href="global.html#loadAddTaskForm">loadAddTaskForm</a></li><li><a href="global.html#loadBoardCard">loadBoardCard</a></li><li><a href="global.html#loadBoardSubtasks">loadBoardSubtasks</a></li><li><a href="global.html#loadBoardUsers">loadBoardUsers</a></li><li><a href="global.html#loadFromLocalStorage">loadFromLocalStorage</a></li><li><a href="global.html#loadFromLocalStorageContacts">loadFromLocalStorageContacts</a></li><li><a href="global.html#loadStandardUserListAndContacts">loadStandardUserListAndContacts</a></li><li><a href="global.html#loadStringFromLocalStorage">loadStringFromLocalStorage</a></li><li><a href="global.html#loadSummaryCategory">loadSummaryCategory</a></li><li><a href="global.html#loadSummaryTask">loadSummaryTask</a></li><li><a href="global.html#loadTaskBoard">loadTaskBoard</a></li><li><a href="global.html#loadTouch">loadTouch</a></li><li><a href="global.html#loadUserData">loadUserData</a></li><li><a href="global.html#loadUsers">loadUsers</a></li><li><a href="global.html#loadUsersFromLocalStorage">loadUsersFromLocalStorage</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#moveTo">moveTo</a></li><li><a href="global.html#noTasksTouch">noTasksTouch</a></li><li><a href="global.html#notClose">notClose</a></li><li><a href="global.html#openPage">openPage</a></li><li><a href="global.html#processRegistration">processRegistration</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#removeFromMainPage">removeFromMainPage</a></li><li><a href="global.html#removeHighlight">removeHighlight</a></li><li><a href="global.html#removeStringFromLocalStorage">removeStringFromLocalStorage</a></li><li><a href="global.html#renderAssignedToBt">renderAssignedToBt</a></li><li><a href="global.html#renderContacts">renderContacts</a></li><li><a href="global.html#renderContactsHTML">renderContactsHTML</a></li><li><a href="global.html#renderContactsListLetters">renderContactsListLetters</a></li><li><a href="global.html#renderInputText">renderInputText</a></li><li><a href="global.html#renderPopupContact">renderPopupContact</a></li><li><a href="global.html#renderSglContactHTML">renderSglContactHTML</a></li><li><a href="global.html#resetForm">resetForm</a></li><li><a href="global.html#resetFormValue">resetFormValue</a></li><li><a href="global.html#resetTaskForm">resetTaskForm</a></li><li><a href="global.html#saveChangedContact">saveChangedContact</a></li><li><a href="global.html#saveChangedContactFunctions">saveChangedContactFunctions</a></li><li><a href="global.html#saveChangedTask">saveChangedTask</a></li><li><a href="global.html#saveContactValues">saveContactValues</a></li><li><a href="global.html#saveEditedSubtask">saveEditedSubtask</a></li><li><a href="global.html#saveInputText">saveInputText</a></li><li><a href="global.html#saveNewContact">saveNewContact</a></li><li><a href="global.html#saveNewContactValues">saveNewContactValues</a></li><li><a href="global.html#saveNewTask">saveNewTask</a></li><li><a href="global.html#saveStringInLocalStorage">saveStringInLocalStorage</a></li><li><a href="global.html#saveSubtasksListEdit">saveSubtasksListEdit</a></li><li><a href="global.html#saveUserinLocalStorge">saveUserinLocalStorge</a></li><li><a href="global.html#saveUsersToLocalStorage">saveUsersToLocalStorage</a></li><li><a href="global.html#searchAllNote">searchAllNote</a></li><li><a href="global.html#searchNote">searchNote</a></li><li><a href="global.html#setGuestUser">setGuestUser</a></li><li><a href="global.html#setItem">setItem</a></li><li><a href="global.html#setMonth">setMonth</a></li><li><a href="global.html#setPrioButtonColor">setPrioButtonColor</a></li><li><a href="global.html#setTaskPrio">setTaskPrio</a></li><li><a href="global.html#showAssignedToBt">showAssignedToBt</a></li><li><a href="global.html#showContact">showContact</a></li><li><a href="global.html#showForgotPassword">showForgotPassword</a></li><li><a href="global.html#showPopup">showPopup</a></li><li><a href="global.html#showPopupAndRedirect">showPopupAndRedirect</a></li><li><a href="global.html#showPopupContact">showPopupContact</a></li><li><a href="global.html#showPopupContactContainer">showPopupContactContainer</a></li><li><a href="global.html#showPopupContactContent">showPopupContactContent</a></li><li><a href="global.html#showPopupExistContact">showPopupExistContact</a></li><li><a href="global.html#showPopupSlider">showPopupSlider</a></li><li><a href="global.html#showSignUpHideSignUp">showSignUpHideSignUp</a></li><li><a href="global.html#sortContactsList">sortContactsList</a></li><li><a href="global.html#startDragging">startDragging</a></li><li><a href="global.html#stopClosing">stopClosing</a></li><li><a href="global.html#summaryIconChangeHover">summaryIconChangeHover</a></li><li><a href="global.html#summaryIconChangeOut">summaryIconChangeOut</a></li><li><a href="global.html#taskBoardEmpty">taskBoardEmpty</a></li><li><a href="global.html#toggelSubtaskCompleted">toggelSubtaskCompleted</a></li><li><a href="global.html#toggleCheckmark">toggleCheckmark</a></li><li><a href="global.html#touchElementStyle">touchElementStyle</a></li><li><a href="global.html#touchEnd">touchEnd</a></li><li><a href="global.html#touchHighlight">touchHighlight</a></li><li><a href="global.html#touchMove">touchMove</a></li><li><a href="global.html#updateContactsPage">updateContactsPage</a></li><li><a href="global.html#userNavbar">userNavbar</a></li><li><a href="global.html#validatePasswords">validatePasswords</a></li><li><a href="global.html#validateRegistrationFields">validateRegistrationFields</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GreetingAfterTime">GreetingAfterTime</a></li><li><a href="global.html#OneStartexecuteOnScreenWidthChange">OneStartexecuteOnScreenWidthChange</a></li><li><a href="global.html#SaveInLocalStorageAndServer">SaveInLocalStorageAndServer</a></li><li><a href="global.html#addGuestTask">addGuestTask</a></li><li><a href="global.html#addStart">addStart</a></li><li><a href="global.html#addUserToContacts">addUserToContacts</a></li><li><a href="global.html#allowDrop">allowDrop</a></li><li><a href="global.html#autoSrcoll">autoSrcoll</a></li><li><a href="global.html#backToContactsList">backToContactsList</a></li><li><a href="global.html#calcCounterAllTasks">calcCounterAllTasks</a></li><li><a href="global.html#calcCounterTasks">calcCounterTasks</a></li><li><a href="global.html#calcPositionTasks">calcPositionTasks</a></li><li><a href="global.html#calcPositionTasksAwaitFeedback">calcPositionTasksAwaitFeedback</a></li><li><a href="global.html#calcPositionTasksDone">calcPositionTasksDone</a></li><li><a href="global.html#calcPositionTasksInProgess">calcPositionTasksInProgess</a></li><li><a href="global.html#calcPositionTasksToDo">calcPositionTasksToDo</a></li><li><a href="global.html#changeBoardAttribute">changeBoardAttribute</a></li><li><a href="global.html#changeBoardDetailCard">changeBoardDetailCard</a></li><li><a href="global.html#changeBoardStyle">changeBoardStyle</a></li><li><a href="global.html#changePassword">changePassword</a></li><li><a href="global.html#changeTask">changeTask</a></li><li><a href="global.html#changeToSubText">changeToSubText</a></li><li><a href="global.html#changeUsersInTask">changeUsersInTask</a></li><li><a href="global.html#checkContactsListLetter">checkContactsListLetter</a></li><li><a href="global.html#checkLoginUser">checkLoginUser</a></li><li><a href="global.html#checkSubTask">checkSubTask</a></li><li><a href="global.html#checkTouchEnd">checkTouchEnd</a></li><li><a href="global.html#checkUserEmail">checkUserEmail</a></li><li><a href="global.html#checkUserLogin">checkUserLogin</a></li><li><a href="global.html#checkedAssist">checkedAssist</a></li><li><a href="global.html#clacDateUrgent">clacDateUrgent</a></li><li><a href="global.html#clearLocalStorage">clearLocalStorage</a></li><li><a href="global.html#closeAssignedToField">closeAssignedToField</a></li><li><a href="global.html#closeBoardCard">closeBoardCard</a></li><li><a href="global.html#closeCurrentTab">closeCurrentTab</a></li><li><a href="global.html#closeNewContacts">closeNewContacts</a></li><li><a href="global.html#closePopup">closePopup</a></li><li><a href="global.html#closePopupAndHideNavbar">closePopupAndHideNavbar</a></li><li><a href="global.html#createAddTask">createAddTask</a></li><li><a href="global.html#createAllTaskCounter">createAllTaskCounter</a></li><li><a href="global.html#createAssignedToBt">createAssignedToBt</a></li><li><a href="global.html#createBoardCardSubtaks">createBoardCardSubtaks</a></li><li><a href="global.html#createBoardCardUsers">createBoardCardUsers</a></li><li><a href="global.html#createBoardSubtasks">createBoardSubtasks</a></li><li><a href="global.html#createBoardTasks">createBoardTasks</a></li><li><a href="global.html#createBoardUsers">createBoardUsers</a></li><li><a href="global.html#createBoradCard">createBoradCard</a></li><li><a href="global.html#createBordCardSubtasks">createBordCardSubtasks</a></li><li><a href="global.html#createBordCardUsers">createBordCardUsers</a></li><li><a href="global.html#createCancelButton">createCancelButton</a></li><li><a href="global.html#createContactsHTML">createContactsHTML</a></li><li><a href="global.html#createContactsListLetters">createContactsListLetters</a></li><li><a href="global.html#createDeleteButton">createDeleteButton</a></li><li><a href="global.html#createHeaderName">createHeaderName</a></li><li><a href="global.html#createInputText">createInputText</a></li><li><a href="global.html#createNewContact">createNewContact</a></li><li><a href="global.html#createNewTask">createNewTask</a></li><li><a href="global.html#createPopup">createPopup</a></li><li><a href="global.html#createPopupButton">createPopupButton</a></li><li><a href="global.html#createPopupContact">createPopupContact</a></li><li><a href="global.html#createPopupExistContactBt">createPopupExistContactBt</a></li><li><a href="global.html#createPopupExistContactIcon">createPopupExistContactIcon</a></li><li><a href="global.html#createSglContactHTML">createSglContactHTML</a></li><li><a href="global.html#defineNewTask">defineNewTask</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContacts">deleteContacts</a></li><li><a href="global.html#deleteFromList">deleteFromList</a></li><li><a href="global.html#deleteInputText">deleteInputText</a></li><li><a href="global.html#deleteSubtask">deleteSubtask</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#deleteTasks">deleteTasks</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#deleteUserAndNavigate">deleteUserAndNavigate</a></li><li><a href="global.html#downloadContact">downloadContact</a></li><li><a href="global.html#downloadTask">downloadTask</a></li><li><a href="global.html#editSubtask">editSubtask</a></li><li><a href="global.html#editTask">editTask</a></li><li><a href="global.html#empty_box">empty_box</a></li><li><a href="global.html#executeOnScreenWidthChange">executeOnScreenWidthChange</a></li><li><a href="global.html#extractTokenFromURL">extractTokenFromURL</a></li><li><a href="global.html#filterTaskBoard">filterTaskBoard</a></li><li><a href="global.html#forgetPassword">forgetPassword</a></li><li><a href="global.html#formatDateUrgent">formatDateUrgent</a></li><li><a href="global.html#generateTaskData">generateTaskData</a></li><li><a href="global.html#getAssignedToUsers">getAssignedToUsers</a></li><li><a href="global.html#getAssignedToUsersEditTask">getAssignedToUsersEditTask</a></li><li><a href="global.html#getContactColor">getContactColor</a></li><li><a href="global.html#getCurrentDate">getCurrentDate</a></li><li><a href="global.html#getFreeIdIndex">getFreeIdIndex</a></li><li><a href="global.html#getIdIndex">getIdIndex</a></li><li><a href="global.html#getIndexTaskEdit">getIndexTaskEdit</a></li><li><a href="global.html#getItem">getItem</a></li><li><a href="global.html#getLogogram">getLogogram</a></li><li><a href="global.html#getTaskBoardField">getTaskBoardField</a></li><li><a href="global.html#getTaskCategory">getTaskCategory</a></li><li><a href="global.html#handleForgotPasswordFormSubmit">handleForgotPasswordFormSubmit</a></li><li><a href="global.html#highlight">highlight</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initAddTask">initAddTask</a></li><li><a href="global.html#initBoard">initBoard</a></li><li><a href="global.html#initContacts">initContacts</a></li><li><a href="global.html#initHelp">initHelp</a></li><li><a href="global.html#initsummary">initsummary</a></li><li><a href="global.html#insertInputValues">insertInputValues</a></li><li><a href="global.html#loadAddTaskForm">loadAddTaskForm</a></li><li><a href="global.html#loadBoardCard">loadBoardCard</a></li><li><a href="global.html#loadBoardSubtasks">loadBoardSubtasks</a></li><li><a href="global.html#loadBoardUsers">loadBoardUsers</a></li><li><a href="global.html#loadCheckedAssist">loadCheckedAssist</a></li><li><a href="global.html#loadFromLocalStorage">loadFromLocalStorage</a></li><li><a href="global.html#loadFromLocalStorageContacts">loadFromLocalStorageContacts</a></li><li><a href="global.html#loadStandardUserListAndContacts">loadStandardUserListAndContacts</a></li><li><a href="global.html#loadStringFromLocalStorage">loadStringFromLocalStorage</a></li><li><a href="global.html#loadSummaryCategory">loadSummaryCategory</a></li><li><a href="global.html#loadSummaryTask">loadSummaryTask</a></li><li><a href="global.html#loadTaskBoard">loadTaskBoard</a></li><li><a href="global.html#loadTouch">loadTouch</a></li><li><a href="global.html#loadUserData">loadUserData</a></li><li><a href="global.html#loadUsers">loadUsers</a></li><li><a href="global.html#loadUsersFromLocalStorage">loadUsersFromLocalStorage</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#moveTo">moveTo</a></li><li><a href="global.html#noTasksTouch">noTasksTouch</a></li><li><a href="global.html#notClose">notClose</a></li><li><a href="global.html#openPage">openPage</a></li><li><a href="global.html#processRegistration">processRegistration</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#removeFromMainPage">removeFromMainPage</a></li><li><a href="global.html#removeHighlight">removeHighlight</a></li><li><a href="global.html#removeStringFromLocalStorage">removeStringFromLocalStorage</a></li><li><a href="global.html#renderAssignedToBt">renderAssignedToBt</a></li><li><a href="global.html#renderContacts">renderContacts</a></li><li><a href="global.html#renderContactsHTML">renderContactsHTML</a></li><li><a href="global.html#renderContactsListLetters">renderContactsListLetters</a></li><li><a href="global.html#renderInputText">renderInputText</a></li><li><a href="global.html#renderPopupContact">renderPopupContact</a></li><li><a href="global.html#renderSglContactHTML">renderSglContactHTML</a></li><li><a href="global.html#resetForm">resetForm</a></li><li><a href="global.html#resetFormValue">resetFormValue</a></li><li><a href="global.html#resetTaskForm">resetTaskForm</a></li><li><a href="global.html#saveChangedContact">saveChangedContact</a></li><li><a href="global.html#saveChangedContactFunctions">saveChangedContactFunctions</a></li><li><a href="global.html#saveChangedTask">saveChangedTask</a></li><li><a href="global.html#saveEditedSubtask">saveEditedSubtask</a></li><li><a href="global.html#saveInputText">saveInputText</a></li><li><a href="global.html#saveNewContact">saveNewContact</a></li><li><a href="global.html#saveNewContactValues">saveNewContactValues</a></li><li><a href="global.html#saveNewTask">saveNewTask</a></li><li><a href="global.html#saveStringInLocalStorage">saveStringInLocalStorage</a></li><li><a href="global.html#saveSubtasksListEdit">saveSubtasksListEdit</a></li><li><a href="global.html#saveUserinLocalStorge">saveUserinLocalStorge</a></li><li><a href="global.html#saveUsersToLocalStorage">saveUsersToLocalStorage</a></li><li><a href="global.html#searchAllNote">searchAllNote</a></li><li><a href="global.html#searchNote">searchNote</a></li><li><a href="global.html#sendContact">sendContact</a></li><li><a href="global.html#sendPasswordChangeRequest">sendPasswordChangeRequest</a></li><li><a href="global.html#sendTask">sendTask</a></li><li><a href="global.html#serchAssitUser">serchAssitUser</a></li><li><a href="global.html#setGuestUser">setGuestUser</a></li><li><a href="global.html#setItem">setItem</a></li><li><a href="global.html#setMonth">setMonth</a></li><li><a href="global.html#setPrioButtonColor">setPrioButtonColor</a></li><li><a href="global.html#setTaskPrio">setTaskPrio</a></li><li><a href="global.html#showAssignedToBt">showAssignedToBt</a></li><li><a href="global.html#showContact">showContact</a></li><li><a href="global.html#showForgotPassword">showForgotPassword</a></li><li><a href="global.html#showPopup">showPopup</a></li><li><a href="global.html#showPopupAndRedirect">showPopupAndRedirect</a></li><li><a href="global.html#showPopupContact">showPopupContact</a></li><li><a href="global.html#showPopupContactContainer">showPopupContactContainer</a></li><li><a href="global.html#showPopupContactContent">showPopupContactContent</a></li><li><a href="global.html#showPopupDeletet">showPopupDeletet</a></li><li><a href="global.html#showPopupExistContact">showPopupExistContact</a></li><li><a href="global.html#showPopupSlider">showPopupSlider</a></li><li><a href="global.html#showPopupWithConfirmation">showPopupWithConfirmation</a></li><li><a href="global.html#showSignUpHideSignUp">showSignUpHideSignUp</a></li><li><a href="global.html#sortContactsList">sortContactsList</a></li><li><a href="global.html#splitName">splitName</a></li><li><a href="global.html#startDragging">startDragging</a></li><li><a href="global.html#stopClosing">stopClosing</a></li><li><a href="global.html#summaryIconChangeHover">summaryIconChangeHover</a></li><li><a href="global.html#summaryIconChangeOut">summaryIconChangeOut</a></li><li><a href="global.html#taskBoardEmpty">taskBoardEmpty</a></li><li><a href="global.html#toggelSubtaskCompleted">toggelSubtaskCompleted</a></li><li><a href="global.html#toggleCheckmark">toggleCheckmark</a></li><li><a href="global.html#touchElementStyle">touchElementStyle</a></li><li><a href="global.html#touchEnd">touchEnd</a></li><li><a href="global.html#touchHighlight">touchHighlight</a></li><li><a href="global.html#touchMove">touchMove</a></li><li><a href="global.html#updateContact">updateContact</a></li><li><a href="global.html#updateContactsPage">updateContactsPage</a></li><li><a href="global.html#updateTask">updateTask</a></li><li><a href="global.html#userNavbar">userNavbar</a></li><li><a href="global.html#validateFormEmail">validateFormEmail</a></li><li><a href="global.html#validatePasswords">validatePasswords</a></li><li><a href="global.html#validateRegistrationFields">validateRegistrationFields</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Nov 07 2023 10:35:56 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Dec 23 2023 13:04:07 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

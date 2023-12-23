@@ -119,6 +119,12 @@ function openPage(page) {
   window.location.href = page;
 }
 
+/**
+ * Closes the current browser tab or window.
+ *
+ * @function
+ * @returns {void}
+ */
 function closeCurrentTab() {
   window.close();
 }

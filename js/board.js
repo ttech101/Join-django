@@ -251,12 +251,6 @@ function closeBoardCard() {
  */
 async function deleteTask(id) {
   if (user != "guest") {
-    // for (let i = 0; i < list.length; i++) {
-    //     const element = list[i];
-    //     if (id == element.id) {
-    //         list.splice(i, 1);
-    //     }
-    // }
     await deleteTasks(id);
     closeBoardCard();
     loadTaskBoard();

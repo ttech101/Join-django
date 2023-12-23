@@ -24,6 +24,15 @@ function saveUserinLocalStorge(u, n) {
   localStorage.setItem("name", user_name);
 }
 
+/**
+ * Asynchronously checks the login credentials of a user and performs actions based on the server response.
+ *
+ * @function
+ * @async
+ * @param {string} email - The email address of the user for login.
+ * @param {string} password - The password of the user for login.
+ * @returns {Promise<void>} A promise that resolves after checking the login credentials and handling the server response.
+ */
 async function checkLoginUser(email, password) {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -59,30 +68,37 @@ async function checkLoginUser(email, password) {
     .catch((error) => console.log("Server failed", error));
 }
 
-// Funktion zum Extrahieren des Tokens aus der URL
+/**
+ * Extracts the token parameter from the current URL's query parameters.
+ *
+ * @function
+ * @returns {string | null} Returns the extracted token or null if the token parameter is not present in the URL.
+ */
 function extractTokenFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get("token");
 }
 
-// Funktion zum Senden der POST-Anfrage mit dem Token
+/**
+ * Sends a password change request to the server with the provided new password.
+ *
+ * @function
+ * @param {string} newPassword - The new password for the password change request.
+ * @returns {void}
+ * @throws {Error} Throws an error if the token is not found in the URL or if there is an error during the request.
+ */
 function sendPasswordChangeRequest(newPassword) {
   const token = extractTokenFromURL();
-
   if (!token) {
     console.error("Token not found in the URL");
     return;
   }
-
   const apiUrl = STORAGE_URL + "change_password/";
-
-  // Daten für die POST-Anfrage
   const data = {
     token: token,
     password: newPassword,
   };
 
-  // Senden der POST-Anfrage mit Fetch
   fetch(apiUrl, {
     method: "POST",
     headers: {
@@ -92,8 +108,7 @@ function sendPasswordChangeRequest(newPassword) {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log(result);
-      // Hier kannst du entsprechend auf die Antwort reagieren
+      // console.log(result);
     })
     .catch((error) => {
       console.error("Error:", error);

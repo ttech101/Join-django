@@ -86,7 +86,6 @@ async function processRegistration() {
   let email = document.getElementById("emailregister").value;
   let password1 = document.getElementById("passwordregister1").value;
   let password2 = document.getElementById("passwordregister2").value;
-
   var formdata = new FormData();
   formdata.append("username", email);
   formdata.append("first_name", splitNameResult.firstName);
@@ -94,13 +93,11 @@ async function processRegistration() {
   formdata.append("password1", password1);
   formdata.append("email", email);
   formdata.append("password2", password2);
-
   var requestOptions = {
     method: "POST",
     body: formdata,
     redirect: "follow",
   };
-
   await fetch(STORAGE_URL + "register/", requestOptions)
     .then((response) => response.json())
     .then((result) => {
@@ -179,11 +176,15 @@ async function changePassword() {
   }
 }
 
+/**
+ * Initiates a password reset process by sending a request to the server with the user's email.
+ *
+ * @function
+ * @returns {void}
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
 function forgetPassword() {
   var email = document.getElementById("passwordEmail").value;
-  console.log(email);
-
-  // Sende die E-Mail-Adresse an den Server
   fetch(STORAGE_URL + "reset_password/", {
     method: "POST",
     headers: {
@@ -193,7 +194,6 @@ function forgetPassword() {
   })
     .then((response) => response.json())
     .then((data) => {
-      // Verarbeite die Serverantwort (z. B. zeige eine Erfolgsmeldung an)
       if (data.success != undefined) {
         showPopup(data.success);
         setTimeout(() => {
@@ -204,16 +204,24 @@ function forgetPassword() {
       }
     })
     .catch((error) => {
-      // Verarbeite Fehler (z. B. zeige eine Fehlermeldung an)
       console.error("Fehler:", error);
     });
 }
 
+/**
+ * Splits a full name into its first name and last name components.
+ *
+ * @function
+ * @param {string} fullName - The full name to be split.
+ * @returns {Object} An object containing the first name and last name components.
+ * @property {string} firstName - The first name extracted from the full name.
+ * @property {string} lastName - The last name extracted from the full name.
+ */
 function splitName(fullName) {
   var nameParts = fullName.split(" ");
 
   var firstName = nameParts[0];
-  var lastName = nameParts.slice(1).join(" "); // The last name might contain more than one word
+  var lastName = nameParts.slice(1).join(" ");
 
   return { firstName, lastName };
 }

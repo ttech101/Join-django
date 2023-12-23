@@ -457,7 +457,6 @@ async function saveChangedTask(
     subtasks: subtasks,
     task_board: taskBoard,
   };
-
   list.splice(i, 1, changedTask);
   await SaveInLocalStorageAndServer(user, listString, list);
 }

@@ -1,5 +1,3 @@
-//const STORAGE_TOKEN = "TOU51R21M1ZJUBNEVP1Q5YFN1UVMEURVYQ27V9AJ"; //The tocken to the server storage
-//const STORAGE_URL = 'https://remote-storage.developerakademie.org/item';  //The URL to the server storage
 const STORAGE_URL = "http://localhost:8000/";
 let user; // Creation of users variable
 let list; //Creation of list variable
@@ -45,31 +43,12 @@ async function getItem(key) {
  *
  * @param {String} users        User
  * @param {String} keyString    key as string
- */
-async function SaveDataInLocalStorageFromServer(users, keyString) {
-  let data = await JSON.parse(await getItem(users + `-${keyString}`));
-  let dataAsText = JSON.stringify(data);
-  localStorage.setItem(keyString, dataAsText);
-}
-
-/**
- * This function saves the user data in the local storage and on the server
- *
- * @param {String} users        User
- * @param {String} keyString    key as string
  * @param {String} dataObject   dataobject as string
  */
 async function SaveInLocalStorageAndServer(keyString, dataObject) {
   let dataAsText = JSON.stringify(dataObject); // variable list or contacts
   sessionStorage.setItem(keyString, dataAsText);
-  // await setItem(keyString, dataObject);
 }
-
-// async function SaveInLocalStorageAndServer(users, keyString, dataObject) {
-//   let dataAsText = JSON.stringify(dataObject); // variable list or contacts
-//   sessionStorage.setItem(keyString, dataAsText);
-//   await setItem(users + `-${keyString}`, dataObject);
-// }
 
 /**
  * This function loads the tasks data
@@ -122,6 +101,19 @@ function headerRequest() {
   return myHeaders;
 }
 
+/**
+ * Asynchronously sends contact information to the server and triggers a download of updated contact data.
+ *
+ * @function
+ * @async
+ * @param {string} email - The email address of the contact.
+ * @param {string} hex_color - The hexadecimal color code associated with the contact.
+ * @param {File} logogram - The logogram file representing the contact.
+ * @param {string} name - The name of the contact.
+ * @param {string} phone_number - The phone number of the contact.
+ * @returns {Promise<void>} A promise that resolves after sending the contact information and downloading updated contact data.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
 async function sendContact(email, hex_color, logogram, name, phone_number) {
   var myHeaders = headerRequest();
   var formdata = new FormData();
@@ -130,22 +122,26 @@ async function sendContact(email, hex_color, logogram, name, phone_number) {
   formdata.append("logogram", logogram);
   formdata.append("name", name);
   formdata.append("phone_number", phone_number);
-
   var requestOptions = {
     method: "POST",
     headers: myHeaders,
     body: formdata,
     redirect: "follow",
   };
-
   await fetch(STORAGE_URL + "contact/", requestOptions)
     .then((response) => response.text())
-    // .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
-
   await downloadContact();
 }
 
+/**
+ * Asynchronously downloads contact data from the server and updates the session storage.
+ *
+ * @function
+ * @async
+ * @returns {Promise<void>} A promise that resolves after downloading and updating contact data.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
 async function downloadContact() {
   var myHeaders = headerRequest();
 
@@ -165,6 +161,15 @@ async function downloadContact() {
     .catch((error) => console.log("error", error));
 }
 
+/**
+ * Asynchronously deletes a contact from the server based on the provided index.
+ *
+ * @function
+ * @async
+ * @param {number} i - The index of the contact to be deleted.
+ * @returns {Promise<void>} A promise that resolves after successfully deleting the contact.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
 async function deleteContact(i) {
   var myHeaders = headerRequest();
   id = contacts[i].id;
@@ -175,13 +180,25 @@ async function deleteContact(i) {
     body: "",
     redirect: "follow",
   };
-
   await fetch(STORAGE_URL + "contact/" + id + "/", requestOptions)
     .then((response) => response.text())
-    // .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
 }
 
+/**
+ * Asynchronously updates a contact on the server with the provided information.
+ *
+ * @function
+ * @async
+ * @param {number} id - The ID of the contact to be updated.
+ * @param {string} email - The updated email address of the contact.
+ * @param {string} hex_color - The updated hexadecimal color code associated with the contact.
+ * @param {File} logogram - The updated logogram file representing the contact.
+ * @param {string} name - The updated name of the contact.
+ * @param {string} phone_number - The updated phone number of the contact.
+ * @returns {Promise<void>} A promise that resolves after successfully updating the contact and downloading updated contact data.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
 async function updateContact(
   id,
   email,
@@ -197,22 +214,33 @@ async function updateContact(
   formdata.append("logogram", logogram);
   formdata.append("name", name);
   formdata.append("phone_number", phone_number);
-
   var requestOptions = {
     method: "PUT",
     headers: myHeaders,
     body: formdata,
     redirect: "follow",
   };
-
   await fetch(STORAGE_URL + "contact/" + id + "/", requestOptions)
     .then((response) => response.text())
-    // .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
-
   await downloadContact();
 }
 
+/**
+ * Asynchronously sends a new task to the server with the provided information.
+ *
+ * @function
+ * @async
+ * @param {string} headline - The headline or title of the task.
+ * @param {string} text - The description or details of the task.
+ * @param {string} task_user - The user assigned to the task.
+ * @param {string} date - The due date of the task.
+ * @param {string} category - The category or type of the task.
+ * @param {string} idBox - The ID of the task box associated with the task.
+ * @param {string} task_board - The task board to which the task belongs.
+ * @returns {Promise<void>} A promise that resolves after successfully sending the new task and downloading updated task data.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
 async function sendTask(
   headline,
   text,
@@ -234,35 +262,43 @@ async function sendTask(
   formdata.append("subtasks", subtask);
   formdata.append("task_user", task_user);
   formdata.append("task_board", task_board);
-
   var requestOptions = {
     method: "POST",
     headers: myHeaders,
     body: formdata,
     redirect: "follow",
   };
-
   await fetch(STORAGE_URL + "task/", requestOptions)
     .then((response) => response.text())
-    //.then((result) => console.log(result))
     .catch((error) => console.log("error", error));
-
   await downloadTask();
 }
 
+/**
+ * Converts an array of subtasks to a JSON string.
+ *
+ * @function
+ * @returns {string} A JSON string representing the array of subtasks.
+ */
 function checkSubTask() {
   return JSON.stringify(subtasks);
 }
 
+/**
+ * Asynchronously downloads task data from the server and updates the session storage.
+ *
+ * @function
+ * @async
+ * @returns {Promise<void>} A promise that resolves after downloading and updating task data.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
 async function downloadTask() {
   var myHeaders = headerRequest();
-
   var requestOptions = {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
   };
-
   await fetch(STORAGE_URL + "task/", requestOptions)
     .then((response) => response.json())
     .then((result) => {
@@ -273,6 +309,15 @@ async function downloadTask() {
     .catch((error) => console.log("error", error));
 }
 
+/**
+ * Asynchronously deletes a task from the server based on the provided ID.
+ *
+ * @function
+ * @async
+ * @param {number} id - The ID of the task to be deleted.
+ * @returns {Promise<void>} A promise that resolves after successfully deleting the task and downloading updated task data.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
 async function deleteTasks(id) {
   var myHeaders = headerRequest();
   var requestOptions = {
@@ -281,15 +326,29 @@ async function deleteTasks(id) {
     body: "",
     redirect: "follow",
   };
-
   await fetch(STORAGE_URL + "task/" + id + "/", requestOptions)
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
-
   await downloadTask();
 }
 
+/**
+ * Asynchronously updates a task on the server with the provided information.
+ *
+ * @function
+ * @async
+ * @param {string} headline - The updated headline or title of the task.
+ * @param {string} text - The updated description or details of the task.
+ * @param {string} task_user - The updated user assigned to the task.
+ * @param {string} date - The updated due date of the task.
+ * @param {string} category - The updated category or type of the task.
+ * @param {string} idBox - The updated ID of the task box associated with the task.
+ * @param {string} task_board - The updated task board to which the task belongs.
+ * @param {number} id - The ID of the task to be updated.
+ * @returns {Promise<void>} A promise that resolves after successfully updating the task and downloading updated task data.
+ * @throws {Error} Throws an error if there is an issue with the server request.
+ */
 async function updateTask(
   headline,
   text,
@@ -312,22 +371,24 @@ async function updateTask(
   formdata.append("subtasks", subtask);
   formdata.append("task_user", task_user);
   formdata.append("task_board", task_board);
-
   var requestOptions = {
     method: "PUT",
     headers: myHeaders,
     body: formdata,
     redirect: "follow",
   };
-
   await fetch(STORAGE_URL + "task/" + id + "/", requestOptions)
     .then((response) => response.text())
-    // .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
-
   await downloadTask();
 }
 
+/**
+ * Deletes the current user account on the server.
+ *
+ * @function
+ * @returns {void}
+ */
 function deleteUser() {
   let token = "Token " + sessionStorage.getItem("authToken");
   fetch(STORAGE_URL + "delete_current_user/", {

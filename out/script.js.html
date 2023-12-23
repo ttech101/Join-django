@@ -32,19 +32,19 @@
  * @param {string} elementIdNone - The ID of the secondary element to toggle.
  */
 function toggleCheckmark(elementId, elementIdNone) {
-    const element = document.getElementById(elementId);
-    const elementNone = document.getElementById(elementIdNone);
-    const checkbox = document.getElementById('privacyPolicyCheckbox');
+  const element = document.getElementById(elementId);
+  const elementNone = document.getElementById(elementIdNone);
+  const checkbox = document.getElementById("privacyPolicyCheckbox");
 
-    if (element.classList.contains('d-none')) {
-        element.classList.remove('d-none');
-        elementNone.classList.add('d-none');
-        checkbox.checked = false;
-    } else {
-        element.classList.add('d-none');
-        elementNone.classList.remove('d-none');
-        checkbox.checked = true;
-    }
+  if (element.classList.contains("d-none")) {
+    element.classList.remove("d-none");
+    elementNone.classList.add("d-none");
+    checkbox.checked = false;
+  } else {
+    element.classList.add("d-none");
+    elementNone.classList.remove("d-none");
+    checkbox.checked = true;
+  }
 }
 
 /**
@@ -52,15 +52,17 @@ function toggleCheckmark(elementId, elementIdNone) {
  * @param {string} action - Determines the action to take, either "show" or "hide".
  */
 function showSignUpHideSignUp(action) {
-    if (action === 'show') {
-        document.getElementById('sign-up').classList.remove('d-none');
-        document.getElementById('login').classList.add('d-none');
-    } else if (action === 'hide') {
-        document.getElementById('sign-up').classList.add('d-none');
-        document.getElementById('forgot-password-container').classList.add('d-none');
-        document.getElementById('password-container').classList.add('d-none');
-        document.getElementById('login').classList.remove('d-none');
-    }
+  if (action === "show") {
+    document.getElementById("sign-up").classList.remove("d-none");
+    document.getElementById("login").classList.add("d-none");
+  } else if (action === "hide") {
+    console.log("hier?");
+    document.getElementById("sign-up").classList.add("d-none");
+    document
+      .getElementById("forgot-password-container")
+      .classList.add("d-none");
+    document.getElementById("login").classList.remove("d-none");
+  }
 }
 
 /**
@@ -68,56 +70,54 @@ function showSignUpHideSignUp(action) {
  * @param {string} mode - Determines the mode, either "forgot" or "reset".
  */
 function showForgotPassword(mode) {
-    if (mode === 'forgot') {
-        document.getElementById('forgot-password-container').classList.remove('d-none');
-        document.getElementById('login').classList.add('d-none');
-    } else if (mode === 'reset') {
-        document.getElementById('password-container').classList.remove('d-none');
-        document.getElementById('forgot-password-container').classList.add('d-none');
-
-    }
+  if (mode === "forgot") {
+    document
+      .getElementById("forgot-password-container")
+      .classList.remove("d-none");
+    document.getElementById("login").classList.add("d-none");
+  } else if (mode === "reset") {
+    document
+      .getElementById("forgot-password-container")
+      .classList.add("d-none");
+  }
 }
-
-///**
-// * Displays a basic alert with the given message.
-// * @param {string} message - The message to display in the alert.
-// */
-//function showPopupAndRedirect(message) {
-//    alert(message);
-//}
 
 /**
  * Validates if two password fields have the same value.
  * @returns {boolean} Returns true if passwords match, false otherwise.
  */
 function validatePasswords() {
-    const password1 = document.getElementById('ForgotPassword1').value;
-    const password2 = document.getElementById('ForgotPassword2').value;
-    const errorMessage = document.getElementById('register-error2');
-    if (password1 !== password2) {
-        showPopup('Your password does not match.')
-        return false;
-    } else {
-        showPopup('The password has been changed')
-        errorMessage.style.display = 'none';
-        return true;
-    }
+  const password1 = document.getElementById("ForgotPassword1").value;
+  const password2 = document.getElementById("ForgotPassword2").value;
+  const errorMessage = document.getElementById("register-error2");
+  if (password1 !== password2) {
+    showPopup("Your password does not match.");
+    return false;
+  } else {
+    showPopup("The password has been changed");
+    errorMessage.style.display = "none";
+    return true;
+  }
 }
 
 /**
  * Checks if the given email exists in the users list and toggles visibility of relevant sections.
  */
 function checkUserEmail() {
-    let passwordEmail = document.getElementById('passwordEmail').value;
+  let passwordEmail = document.getElementById("passwordEmail").value;
 
-    user = users.find(u => u.email === passwordEmail);
-    if (user) {
-        // Wenn der Benutzer in der Liste gefunden wurde
-        document.getElementById('forgot-password-container').classList.add('d-none');
-        document.getElementById('password-container').classList.remove('d-none');
-    } else {
-        showPopup('This email address is not registered. Please check your input or register.');
-    }
+  user = users.find((u) => u.email === passwordEmail);
+  if (user) {
+    // Wenn der Benutzer in der Liste gefunden wurde
+    document
+      .getElementById("forgot-password-container")
+      .classList.add("d-none");
+    document.getElementById("password-container").classList.remove("d-none");
+  } else {
+    showPopup(
+      "This email address is not registered. Please check your input or register."
+    );
+  }
 }
 
 /**
@@ -125,18 +125,18 @@ function checkUserEmail() {
  * @returns {boolean} Always returns false to prevent form submission.
  */
 async function handleForgotPasswordFormSubmit() {
-    await loadUsers();
-    checkUserEmail();
-    //return false;
+  await loadUsers();
+  checkUserEmail();
+  //return false;
 }
 
 /**
  * Validates if a user is defined. If not, redirects to the index page.
  */
 function checkUserLogin() {
-    if (user == undefined) {
-        openPage('../index.html');
-    }
+  if (user == undefined) {
+    openPage("../index.html");
+  }
 }
 
 /**
@@ -144,109 +144,230 @@ function checkUserLogin() {
  * @param {string} page - The URL of the page to redirect to.
  */
 function openPage(page) {
-    window.location.href = page;
+  window.location.href = page;
 }
 
+/**
+ * Closes the current browser tab or window.
+ *
+ * @function
+ * @returns {void}
+ */
 function closeCurrentTab() {
-    window.close();
+  window.close();
 }
 
 /**
  * Sets the local storage with the data of a guest user.
  */
-function setGuestUser() {
-    user = JSON.stringify('guest');
-    localStorage.setItem('user', user);
+async function setGuestUser() {
+  user = "guest";
+  sessionStorage.setItem(
+    "authToken",
+    "51630fd22b6f59ddab983b0b70aebc9cce0cbc48"
+  );
+  await downloadTask();
+  await downloadContact();
+  console.log("hier");
+  openPage("./html/summary.html");
 }
-
 
 /**
  * Displays a popup with the given text and optionally redirects to a specified URL
- * 
+ *
  * @param {string} text The message to display in the popup.
  * @param {string} url Optional. The URL to redirect to after the popup disappears.
  */
 function showPopupAndRedirect(text, url) {
-    var popup = document.createElement("div");
-    popup.textContent = text;
-    popup.classList.add("popup");
-    document.body.appendChild(popup);
+  var popup = document.createElement("div");
+  popup.textContent = text;
+  popup.classList.add("popup");
+  document.body.appendChild(popup);
+  setTimeout(function () {
+    popup.style.top = "30px";
+  }, 100);
+  setTimeout(function () {
+    popup.style.top = "-100px";
     setTimeout(function () {
-        popup.style.top = "30px";
-    }, 100);
-    setTimeout(function () {
-        popup.style.top = "-100px";
-        setTimeout(function () {
-            document.body.removeChild(popup);
-            if (url) {
-                window.location.href = url;
-            }
-        }, 500);
-    }, 3000);
+      document.body.removeChild(popup);
+      if (url) {
+        window.location.href = url;
+      }
+    }, 500);
+  }, 3000);
 }
 
 /**
  * This function generates a popup window which is displayed in the top center
- * 
+ *
  * @param {String} text text that should be displayed
  */
 function showPopup(text) {
-    var popup = document.createElement("div");
-    popup.textContent = text;
-    popup.classList.add("popup");
-    document.body.appendChild(popup);
+  var popup = document.createElement("div");
+  popup.textContent = text;
+  popup.classList.add("popup");
+  document.body.appendChild(popup);
+  setTimeout(function () {
+    popup.style.top = "30px";
+  }, 100);
+  setTimeout(function () {
+    popup.style.top = "-100px";
     setTimeout(function () {
-        popup.style.top = "30px";
-    }, 100);
-    setTimeout(function () {
-        popup.style.top = "-100px";
-        setTimeout(function () {
-            document.body.removeChild(popup);
-        }, 500);
-    }, 3000);
+      document.body.removeChild(popup);
+    }, 500);
+  }, 3000);
 }
 
 function openHTML(html) {
-    location.href = html;
+  location.href = html;
 }
 
-/** 
+/**
  * Header
  */
 function userNavbar() {
-    let navbar = document.getElementById('navbar');
-    if (navbar.classList.contains('d-none')) {
-        navbar.classList.remove('d-none');
-    } else {
-        navbar.classList.add('d-none');
-    }
+  let navbar = document.getElementById("navbar");
+  if (navbar.classList.contains("d-none")) {
+    navbar.classList.remove("d-none");
+  } else {
+    navbar.classList.add("d-none");
+  }
 }
 
 /**
  * Create Header Name
  */
 function createHeaderName() {
-    for (let i = 0; i &lt; contacts.length; i++) {
-        const element = contacts[i];
-        if (element.email == user) {
-            document.getElementById('header-icon').innerHTML = element.logogram;
-            document.getElementById('header-icon').style.backgroundColor = element.hex_color;
-        } else if (user == 'guest') {
-            document.getElementById('header-icon').innerHTML = 'GU';
-            document.getElementById('header-icon').style.backgroundColor = '#FFA64E';
-        }
+  for (let i = 0; i &lt; contacts.length; i++) {
+    const element = contacts[i];
+    if (element.email == sessionStorage.email) {
+      document.getElementById("header-icon").innerHTML = element.logogram;
+      document.getElementById("header-icon").style.backgroundColor =
+        element.hex_color;
+    } else if (user == "guest") {
+      document.getElementById("header-icon").innerHTML = "GU";
+      document.getElementById("header-icon").style.backgroundColor = "#FFA64E";
     }
+  }
 }
 
 /**
  * Load of info page the user
  */
 async function initHelp() {
-    console.log(user)
-    await loadUserData();
-    loadFromLocalStorageContacts()
-    createHeaderName();
-}</code></pre>
+  await loadUserData();
+  loadFromLocalStorageContacts();
+}
+
+/**
+ * Displays a popup with confirmation text.
+ * @param {string} text - The text to be displayed in the popup.
+ */
+function showPopupWithConfirmation(text) {
+  var popup = createPopup(text);
+
+  var deleteButton = createDeleteButton();
+  deleteButton.addEventListener("click", function () {
+    deleteUserAndNavigate();
+  });
+  popup.appendChild(deleteButton);
+
+  var cancelButton = createCancelButton();
+  cancelButton.addEventListener("click", function () {
+    closePopupAndHideNavbar();
+  });
+  popup.appendChild(cancelButton);
+
+  document.body.appendChild(popup);
+  showPopupDeletet(popup);
+}
+
+/**
+ * Creates a popup element with the specified text.
+ * @param {string} text - The text to be displayed in the popup.
+ * @returns {HTMLElement} The created popup element.
+ */
+function createPopup(text) {
+  var popup = document.createElement("div");
+  popup.classList.add("popup");
+  var message = document.createElement("div");
+  message.textContent = text;
+  popup.appendChild(message);
+  return popup;
+}
+
+/**
+ * Creates a "Delete Account" button for the popup.
+ * @returns {HTMLButtonElement} The created button.
+ */
+function createDeleteButton() {
+  var deleteButton = createPopupButton("Delete Account");
+  deleteButton.classList.add("popup-button-delete");
+  deleteButton.classList.add("popup-button-delete-red");
+  return deleteButton;
+}
+
+/**
+ * Creates a "Cancel" button for the popup.
+ * @returns {HTMLButtonElement} The created button.
+ */
+function createCancelButton() {
+  var cancelButton = createPopupButton("Cancel");
+  cancelButton.classList.add("popup-button-delete");
+  return cancelButton;
+}
+
+/**
+ * Creates a general popup button with the specified text.
+ * @param {string} text - The text of the button.
+ * @returns {HTMLButtonElement} The created button.
+ */
+function createPopupButton(text) {
+  var button = document.createElement("button");
+  button.textContent = text;
+  return button;
+}
+
+/**
+ * Displays the popup element.
+ * @param {HTMLElement} popup - The popup element to be displayed.
+ */
+function showPopupDeletet(popup) {
+  setTimeout(function () {
+    popup.style.top = "30px";
+  }, 100);
+}
+
+/**
+ * Deletes the user and navigates to the home page.
+ */
+function deleteUserAndNavigate() {
+  deleteUser();
+  closePopup();
+  setTimeout(function () {
+    openPage("../index.html");
+  }, 1000);
+}
+
+/**
+ * Closes the popup and hides the navigation bar.
+ */
+function closePopupAndHideNavbar() {
+  closePopup();
+  document.getElementById("navbar").classList.add("d-none");
+}
+
+/**
+ * Closes the popup.
+ */
+function closePopup() {
+  var popup = document.querySelector(".popup");
+  popup.style.top = "-100px";
+  setTimeout(function () {
+    document.body.removeChild(popup);
+  }, 500);
+}
+</code></pre>
         </article>
     </section>
 
@@ -256,13 +377,13 @@ async function initHelp() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GreetingAfterTime">GreetingAfterTime</a></li><li><a href="global.html#OneStartexecuteOnScreenWidthChange">OneStartexecuteOnScreenWidthChange</a></li><li><a href="global.html#SaveDataInLocalStorageFromServer">SaveDataInLocalStorageFromServer</a></li><li><a href="global.html#SaveInLocalStorageAndServer">SaveInLocalStorageAndServer</a></li><li><a href="global.html#addGuestTask">addGuestTask</a></li><li><a href="global.html#addStart">addStart</a></li><li><a href="global.html#addUserToContacts">addUserToContacts</a></li><li><a href="global.html#allowDrop">allowDrop</a></li><li><a href="global.html#autoSrcoll">autoSrcoll</a></li><li><a href="global.html#backToContactsList">backToContactsList</a></li><li><a href="global.html#calcCounterAllTasks">calcCounterAllTasks</a></li><li><a href="global.html#calcCounterTasks">calcCounterTasks</a></li><li><a href="global.html#calcPositionTasks">calcPositionTasks</a></li><li><a href="global.html#calcPositionTasksAwaitFeedback">calcPositionTasksAwaitFeedback</a></li><li><a href="global.html#calcPositionTasksDone">calcPositionTasksDone</a></li><li><a href="global.html#calcPositionTasksInProgess">calcPositionTasksInProgess</a></li><li><a href="global.html#calcPositionTasksToDo">calcPositionTasksToDo</a></li><li><a href="global.html#changeBoardAttribute">changeBoardAttribute</a></li><li><a href="global.html#changeBoardDetailCard">changeBoardDetailCard</a></li><li><a href="global.html#changeBoardStyle">changeBoardStyle</a></li><li><a href="global.html#changePassword">changePassword</a></li><li><a href="global.html#changeTask">changeTask</a></li><li><a href="global.html#changeToSubText">changeToSubText</a></li><li><a href="global.html#changeUsersInTask">changeUsersInTask</a></li><li><a href="global.html#checkContactsListLetter">checkContactsListLetter</a></li><li><a href="global.html#checkTouchEnd">checkTouchEnd</a></li><li><a href="global.html#checkUserEmail">checkUserEmail</a></li><li><a href="global.html#checkUserLogin">checkUserLogin</a></li><li><a href="global.html#clacDateUrgent">clacDateUrgent</a></li><li><a href="global.html#clearLocalStorage">clearLocalStorage</a></li><li><a href="global.html#closeAssignedToField">closeAssignedToField</a></li><li><a href="global.html#closeBoardCard">closeBoardCard</a></li><li><a href="global.html#closeNewContacts">closeNewContacts</a></li><li><a href="global.html#createAddTask">createAddTask</a></li><li><a href="global.html#createAllTaskCounter">createAllTaskCounter</a></li><li><a href="global.html#createAssignedToBt">createAssignedToBt</a></li><li><a href="global.html#createBoardCardSubtaks">createBoardCardSubtaks</a></li><li><a href="global.html#createBoardCardUsers">createBoardCardUsers</a></li><li><a href="global.html#createBoardSubtasks">createBoardSubtasks</a></li><li><a href="global.html#createBoardTasks">createBoardTasks</a></li><li><a href="global.html#createBoardUsers">createBoardUsers</a></li><li><a href="global.html#createBoradCard">createBoradCard</a></li><li><a href="global.html#createBordCardSubtasks">createBordCardSubtasks</a></li><li><a href="global.html#createBordCardUsers">createBordCardUsers</a></li><li><a href="global.html#createContactsHTML">createContactsHTML</a></li><li><a href="global.html#createContactsListLetters">createContactsListLetters</a></li><li><a href="global.html#createHeaderName">createHeaderName</a></li><li><a href="global.html#createInputText">createInputText</a></li><li><a href="global.html#createNewContact">createNewContact</a></li><li><a href="global.html#createNewTask">createNewTask</a></li><li><a href="global.html#createPopupContact">createPopupContact</a></li><li><a href="global.html#createPopupExistContactBt">createPopupExistContactBt</a></li><li><a href="global.html#createPopupExistContactIcon">createPopupExistContactIcon</a></li><li><a href="global.html#createSglContactHTML">createSglContactHTML</a></li><li><a href="global.html#defineNewTask">defineNewTask</a></li><li><a href="global.html#deleteContacts">deleteContacts</a></li><li><a href="global.html#deleteFromList">deleteFromList</a></li><li><a href="global.html#deleteInputText">deleteInputText</a></li><li><a href="global.html#deleteSubtask">deleteSubtask</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#editSubtask">editSubtask</a></li><li><a href="global.html#editTask">editTask</a></li><li><a href="global.html#empty_box">empty_box</a></li><li><a href="global.html#executeOnScreenWidthChange">executeOnScreenWidthChange</a></li><li><a href="global.html#filterTaskBoard">filterTaskBoard</a></li><li><a href="global.html#formatDateUrgent">formatDateUrgent</a></li><li><a href="global.html#generateTaskData">generateTaskData</a></li><li><a href="global.html#getAssignedToUsers">getAssignedToUsers</a></li><li><a href="global.html#getAssignedToUsersEditTask">getAssignedToUsersEditTask</a></li><li><a href="global.html#getContactColor">getContactColor</a></li><li><a href="global.html#getCurrentDate">getCurrentDate</a></li><li><a href="global.html#getFreeIdIndex">getFreeIdIndex</a></li><li><a href="global.html#getIdIndex">getIdIndex</a></li><li><a href="global.html#getIndexTaskEdit">getIndexTaskEdit</a></li><li><a href="global.html#getItem">getItem</a></li><li><a href="global.html#getLogogram">getLogogram</a></li><li><a href="global.html#getTaskBoardField">getTaskBoardField</a></li><li><a href="global.html#getTaskCategory">getTaskCategory</a></li><li><a href="global.html#handleForgotPasswordFormSubmit">handleForgotPasswordFormSubmit</a></li><li><a href="global.html#highlight">highlight</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initAddTask">initAddTask</a></li><li><a href="global.html#initBoard">initBoard</a></li><li><a href="global.html#initContacts">initContacts</a></li><li><a href="global.html#initHelp">initHelp</a></li><li><a href="global.html#initsummary">initsummary</a></li><li><a href="global.html#insertInputValues">insertInputValues</a></li><li><a href="global.html#loadAddTaskForm">loadAddTaskForm</a></li><li><a href="global.html#loadBoardCard">loadBoardCard</a></li><li><a href="global.html#loadBoardSubtasks">loadBoardSubtasks</a></li><li><a href="global.html#loadBoardUsers">loadBoardUsers</a></li><li><a href="global.html#loadFromLocalStorage">loadFromLocalStorage</a></li><li><a href="global.html#loadFromLocalStorageContacts">loadFromLocalStorageContacts</a></li><li><a href="global.html#loadStandardUserListAndContacts">loadStandardUserListAndContacts</a></li><li><a href="global.html#loadStringFromLocalStorage">loadStringFromLocalStorage</a></li><li><a href="global.html#loadSummaryCategory">loadSummaryCategory</a></li><li><a href="global.html#loadSummaryTask">loadSummaryTask</a></li><li><a href="global.html#loadTaskBoard">loadTaskBoard</a></li><li><a href="global.html#loadTouch">loadTouch</a></li><li><a href="global.html#loadUserData">loadUserData</a></li><li><a href="global.html#loadUsers">loadUsers</a></li><li><a href="global.html#loadUsersFromLocalStorage">loadUsersFromLocalStorage</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#moveTo">moveTo</a></li><li><a href="global.html#noTasksTouch">noTasksTouch</a></li><li><a href="global.html#notClose">notClose</a></li><li><a href="global.html#openPage">openPage</a></li><li><a href="global.html#processRegistration">processRegistration</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#removeFromMainPage">removeFromMainPage</a></li><li><a href="global.html#removeHighlight">removeHighlight</a></li><li><a href="global.html#removeStringFromLocalStorage">removeStringFromLocalStorage</a></li><li><a href="global.html#renderAssignedToBt">renderAssignedToBt</a></li><li><a href="global.html#renderContacts">renderContacts</a></li><li><a href="global.html#renderContactsHTML">renderContactsHTML</a></li><li><a href="global.html#renderContactsListLetters">renderContactsListLetters</a></li><li><a href="global.html#renderInputText">renderInputText</a></li><li><a href="global.html#renderPopupContact">renderPopupContact</a></li><li><a href="global.html#renderSglContactHTML">renderSglContactHTML</a></li><li><a href="global.html#resetForm">resetForm</a></li><li><a href="global.html#resetFormValue">resetFormValue</a></li><li><a href="global.html#resetTaskForm">resetTaskForm</a></li><li><a href="global.html#saveChangedContact">saveChangedContact</a></li><li><a href="global.html#saveChangedContactFunctions">saveChangedContactFunctions</a></li><li><a href="global.html#saveChangedTask">saveChangedTask</a></li><li><a href="global.html#saveContactValues">saveContactValues</a></li><li><a href="global.html#saveEditedSubtask">saveEditedSubtask</a></li><li><a href="global.html#saveInputText">saveInputText</a></li><li><a href="global.html#saveNewContact">saveNewContact</a></li><li><a href="global.html#saveNewContactValues">saveNewContactValues</a></li><li><a href="global.html#saveNewTask">saveNewTask</a></li><li><a href="global.html#saveStringInLocalStorage">saveStringInLocalStorage</a></li><li><a href="global.html#saveSubtasksListEdit">saveSubtasksListEdit</a></li><li><a href="global.html#saveUserinLocalStorge">saveUserinLocalStorge</a></li><li><a href="global.html#saveUsersToLocalStorage">saveUsersToLocalStorage</a></li><li><a href="global.html#searchAllNote">searchAllNote</a></li><li><a href="global.html#searchNote">searchNote</a></li><li><a href="global.html#setGuestUser">setGuestUser</a></li><li><a href="global.html#setItem">setItem</a></li><li><a href="global.html#setMonth">setMonth</a></li><li><a href="global.html#setPrioButtonColor">setPrioButtonColor</a></li><li><a href="global.html#setTaskPrio">setTaskPrio</a></li><li><a href="global.html#showAssignedToBt">showAssignedToBt</a></li><li><a href="global.html#showContact">showContact</a></li><li><a href="global.html#showForgotPassword">showForgotPassword</a></li><li><a href="global.html#showPopup">showPopup</a></li><li><a href="global.html#showPopupAndRedirect">showPopupAndRedirect</a></li><li><a href="global.html#showPopupContact">showPopupContact</a></li><li><a href="global.html#showPopupContactContainer">showPopupContactContainer</a></li><li><a href="global.html#showPopupContactContent">showPopupContactContent</a></li><li><a href="global.html#showPopupExistContact">showPopupExistContact</a></li><li><a href="global.html#showPopupSlider">showPopupSlider</a></li><li><a href="global.html#showSignUpHideSignUp">showSignUpHideSignUp</a></li><li><a href="global.html#sortContactsList">sortContactsList</a></li><li><a href="global.html#startDragging">startDragging</a></li><li><a href="global.html#stopClosing">stopClosing</a></li><li><a href="global.html#summaryIconChangeHover">summaryIconChangeHover</a></li><li><a href="global.html#summaryIconChangeOut">summaryIconChangeOut</a></li><li><a href="global.html#taskBoardEmpty">taskBoardEmpty</a></li><li><a href="global.html#toggelSubtaskCompleted">toggelSubtaskCompleted</a></li><li><a href="global.html#toggleCheckmark">toggleCheckmark</a></li><li><a href="global.html#touchElementStyle">touchElementStyle</a></li><li><a href="global.html#touchEnd">touchEnd</a></li><li><a href="global.html#touchHighlight">touchHighlight</a></li><li><a href="global.html#touchMove">touchMove</a></li><li><a href="global.html#updateContactsPage">updateContactsPage</a></li><li><a href="global.html#userNavbar">userNavbar</a></li><li><a href="global.html#validatePasswords">validatePasswords</a></li><li><a href="global.html#validateRegistrationFields">validateRegistrationFields</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#GreetingAfterTime">GreetingAfterTime</a></li><li><a href="global.html#OneStartexecuteOnScreenWidthChange">OneStartexecuteOnScreenWidthChange</a></li><li><a href="global.html#SaveInLocalStorageAndServer">SaveInLocalStorageAndServer</a></li><li><a href="global.html#addGuestTask">addGuestTask</a></li><li><a href="global.html#addStart">addStart</a></li><li><a href="global.html#addUserToContacts">addUserToContacts</a></li><li><a href="global.html#allowDrop">allowDrop</a></li><li><a href="global.html#autoSrcoll">autoSrcoll</a></li><li><a href="global.html#backToContactsList">backToContactsList</a></li><li><a href="global.html#calcCounterAllTasks">calcCounterAllTasks</a></li><li><a href="global.html#calcCounterTasks">calcCounterTasks</a></li><li><a href="global.html#calcPositionTasks">calcPositionTasks</a></li><li><a href="global.html#calcPositionTasksAwaitFeedback">calcPositionTasksAwaitFeedback</a></li><li><a href="global.html#calcPositionTasksDone">calcPositionTasksDone</a></li><li><a href="global.html#calcPositionTasksInProgess">calcPositionTasksInProgess</a></li><li><a href="global.html#calcPositionTasksToDo">calcPositionTasksToDo</a></li><li><a href="global.html#changeBoardAttribute">changeBoardAttribute</a></li><li><a href="global.html#changeBoardDetailCard">changeBoardDetailCard</a></li><li><a href="global.html#changeBoardStyle">changeBoardStyle</a></li><li><a href="global.html#changePassword">changePassword</a></li><li><a href="global.html#changeTask">changeTask</a></li><li><a href="global.html#changeToSubText">changeToSubText</a></li><li><a href="global.html#changeUsersInTask">changeUsersInTask</a></li><li><a href="global.html#checkContactsListLetter">checkContactsListLetter</a></li><li><a href="global.html#checkLoginUser">checkLoginUser</a></li><li><a href="global.html#checkSubTask">checkSubTask</a></li><li><a href="global.html#checkTouchEnd">checkTouchEnd</a></li><li><a href="global.html#checkUserEmail">checkUserEmail</a></li><li><a href="global.html#checkUserLogin">checkUserLogin</a></li><li><a href="global.html#checkedAssist">checkedAssist</a></li><li><a href="global.html#clacDateUrgent">clacDateUrgent</a></li><li><a href="global.html#clearLocalStorage">clearLocalStorage</a></li><li><a href="global.html#closeAssignedToField">closeAssignedToField</a></li><li><a href="global.html#closeBoardCard">closeBoardCard</a></li><li><a href="global.html#closeCurrentTab">closeCurrentTab</a></li><li><a href="global.html#closeNewContacts">closeNewContacts</a></li><li><a href="global.html#closePopup">closePopup</a></li><li><a href="global.html#closePopupAndHideNavbar">closePopupAndHideNavbar</a></li><li><a href="global.html#createAddTask">createAddTask</a></li><li><a href="global.html#createAllTaskCounter">createAllTaskCounter</a></li><li><a href="global.html#createAssignedToBt">createAssignedToBt</a></li><li><a href="global.html#createBoardCardSubtaks">createBoardCardSubtaks</a></li><li><a href="global.html#createBoardCardUsers">createBoardCardUsers</a></li><li><a href="global.html#createBoardSubtasks">createBoardSubtasks</a></li><li><a href="global.html#createBoardTasks">createBoardTasks</a></li><li><a href="global.html#createBoardUsers">createBoardUsers</a></li><li><a href="global.html#createBoradCard">createBoradCard</a></li><li><a href="global.html#createBordCardSubtasks">createBordCardSubtasks</a></li><li><a href="global.html#createBordCardUsers">createBordCardUsers</a></li><li><a href="global.html#createCancelButton">createCancelButton</a></li><li><a href="global.html#createContactsHTML">createContactsHTML</a></li><li><a href="global.html#createContactsListLetters">createContactsListLetters</a></li><li><a href="global.html#createDeleteButton">createDeleteButton</a></li><li><a href="global.html#createHeaderName">createHeaderName</a></li><li><a href="global.html#createInputText">createInputText</a></li><li><a href="global.html#createNewContact">createNewContact</a></li><li><a href="global.html#createNewTask">createNewTask</a></li><li><a href="global.html#createPopup">createPopup</a></li><li><a href="global.html#createPopupButton">createPopupButton</a></li><li><a href="global.html#createPopupContact">createPopupContact</a></li><li><a href="global.html#createPopupExistContactBt">createPopupExistContactBt</a></li><li><a href="global.html#createPopupExistContactIcon">createPopupExistContactIcon</a></li><li><a href="global.html#createSglContactHTML">createSglContactHTML</a></li><li><a href="global.html#defineNewTask">defineNewTask</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContacts">deleteContacts</a></li><li><a href="global.html#deleteFromList">deleteFromList</a></li><li><a href="global.html#deleteInputText">deleteInputText</a></li><li><a href="global.html#deleteSubtask">deleteSubtask</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#deleteTasks">deleteTasks</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#deleteUserAndNavigate">deleteUserAndNavigate</a></li><li><a href="global.html#downloadContact">downloadContact</a></li><li><a href="global.html#downloadTask">downloadTask</a></li><li><a href="global.html#editSubtask">editSubtask</a></li><li><a href="global.html#editTask">editTask</a></li><li><a href="global.html#empty_box">empty_box</a></li><li><a href="global.html#executeOnScreenWidthChange">executeOnScreenWidthChange</a></li><li><a href="global.html#extractTokenFromURL">extractTokenFromURL</a></li><li><a href="global.html#filterTaskBoard">filterTaskBoard</a></li><li><a href="global.html#forgetPassword">forgetPassword</a></li><li><a href="global.html#formatDateUrgent">formatDateUrgent</a></li><li><a href="global.html#generateTaskData">generateTaskData</a></li><li><a href="global.html#getAssignedToUsers">getAssignedToUsers</a></li><li><a href="global.html#getAssignedToUsersEditTask">getAssignedToUsersEditTask</a></li><li><a href="global.html#getContactColor">getContactColor</a></li><li><a href="global.html#getCurrentDate">getCurrentDate</a></li><li><a href="global.html#getFreeIdIndex">getFreeIdIndex</a></li><li><a href="global.html#getIdIndex">getIdIndex</a></li><li><a href="global.html#getIndexTaskEdit">getIndexTaskEdit</a></li><li><a href="global.html#getItem">getItem</a></li><li><a href="global.html#getLogogram">getLogogram</a></li><li><a href="global.html#getTaskBoardField">getTaskBoardField</a></li><li><a href="global.html#getTaskCategory">getTaskCategory</a></li><li><a href="global.html#handleForgotPasswordFormSubmit">handleForgotPasswordFormSubmit</a></li><li><a href="global.html#highlight">highlight</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initAddTask">initAddTask</a></li><li><a href="global.html#initBoard">initBoard</a></li><li><a href="global.html#initContacts">initContacts</a></li><li><a href="global.html#initHelp">initHelp</a></li><li><a href="global.html#initsummary">initsummary</a></li><li><a href="global.html#insertInputValues">insertInputValues</a></li><li><a href="global.html#loadAddTaskForm">loadAddTaskForm</a></li><li><a href="global.html#loadBoardCard">loadBoardCard</a></li><li><a href="global.html#loadBoardSubtasks">loadBoardSubtasks</a></li><li><a href="global.html#loadBoardUsers">loadBoardUsers</a></li><li><a href="global.html#loadCheckedAssist">loadCheckedAssist</a></li><li><a href="global.html#loadFromLocalStorage">loadFromLocalStorage</a></li><li><a href="global.html#loadFromLocalStorageContacts">loadFromLocalStorageContacts</a></li><li><a href="global.html#loadStandardUserListAndContacts">loadStandardUserListAndContacts</a></li><li><a href="global.html#loadStringFromLocalStorage">loadStringFromLocalStorage</a></li><li><a href="global.html#loadSummaryCategory">loadSummaryCategory</a></li><li><a href="global.html#loadSummaryTask">loadSummaryTask</a></li><li><a href="global.html#loadTaskBoard">loadTaskBoard</a></li><li><a href="global.html#loadTouch">loadTouch</a></li><li><a href="global.html#loadUserData">loadUserData</a></li><li><a href="global.html#loadUsers">loadUsers</a></li><li><a href="global.html#loadUsersFromLocalStorage">loadUsersFromLocalStorage</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#moveTo">moveTo</a></li><li><a href="global.html#noTasksTouch">noTasksTouch</a></li><li><a href="global.html#notClose">notClose</a></li><li><a href="global.html#openPage">openPage</a></li><li><a href="global.html#processRegistration">processRegistration</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#removeFromMainPage">removeFromMainPage</a></li><li><a href="global.html#removeHighlight">removeHighlight</a></li><li><a href="global.html#removeStringFromLocalStorage">removeStringFromLocalStorage</a></li><li><a href="global.html#renderAssignedToBt">renderAssignedToBt</a></li><li><a href="global.html#renderContacts">renderContacts</a></li><li><a href="global.html#renderContactsHTML">renderContactsHTML</a></li><li><a href="global.html#renderContactsListLetters">renderContactsListLetters</a></li><li><a href="global.html#renderInputText">renderInputText</a></li><li><a href="global.html#renderPopupContact">renderPopupContact</a></li><li><a href="global.html#renderSglContactHTML">renderSglContactHTML</a></li><li><a href="global.html#resetForm">resetForm</a></li><li><a href="global.html#resetFormValue">resetFormValue</a></li><li><a href="global.html#resetTaskForm">resetTaskForm</a></li><li><a href="global.html#saveChangedContact">saveChangedContact</a></li><li><a href="global.html#saveChangedContactFunctions">saveChangedContactFunctions</a></li><li><a href="global.html#saveChangedTask">saveChangedTask</a></li><li><a href="global.html#saveEditedSubtask">saveEditedSubtask</a></li><li><a href="global.html#saveInputText">saveInputText</a></li><li><a href="global.html#saveNewContact">saveNewContact</a></li><li><a href="global.html#saveNewContactValues">saveNewContactValues</a></li><li><a href="global.html#saveNewTask">saveNewTask</a></li><li><a href="global.html#saveStringInLocalStorage">saveStringInLocalStorage</a></li><li><a href="global.html#saveSubtasksListEdit">saveSubtasksListEdit</a></li><li><a href="global.html#saveUserinLocalStorge">saveUserinLocalStorge</a></li><li><a href="global.html#saveUsersToLocalStorage">saveUsersToLocalStorage</a></li><li><a href="global.html#searchAllNote">searchAllNote</a></li><li><a href="global.html#searchNote">searchNote</a></li><li><a href="global.html#sendContact">sendContact</a></li><li><a href="global.html#sendPasswordChangeRequest">sendPasswordChangeRequest</a></li><li><a href="global.html#sendTask">sendTask</a></li><li><a href="global.html#serchAssitUser">serchAssitUser</a></li><li><a href="global.html#setGuestUser">setGuestUser</a></li><li><a href="global.html#setItem">setItem</a></li><li><a href="global.html#setMonth">setMonth</a></li><li><a href="global.html#setPrioButtonColor">setPrioButtonColor</a></li><li><a href="global.html#setTaskPrio">setTaskPrio</a></li><li><a href="global.html#showAssignedToBt">showAssignedToBt</a></li><li><a href="global.html#showContact">showContact</a></li><li><a href="global.html#showForgotPassword">showForgotPassword</a></li><li><a href="global.html#showPopup">showPopup</a></li><li><a href="global.html#showPopupAndRedirect">showPopupAndRedirect</a></li><li><a href="global.html#showPopupContact">showPopupContact</a></li><li><a href="global.html#showPopupContactContainer">showPopupContactContainer</a></li><li><a href="global.html#showPopupContactContent">showPopupContactContent</a></li><li><a href="global.html#showPopupDeletet">showPopupDeletet</a></li><li><a href="global.html#showPopupExistContact">showPopupExistContact</a></li><li><a href="global.html#showPopupSlider">showPopupSlider</a></li><li><a href="global.html#showPopupWithConfirmation">showPopupWithConfirmation</a></li><li><a href="global.html#showSignUpHideSignUp">showSignUpHideSignUp</a></li><li><a href="global.html#sortContactsList">sortContactsList</a></li><li><a href="global.html#splitName">splitName</a></li><li><a href="global.html#startDragging">startDragging</a></li><li><a href="global.html#stopClosing">stopClosing</a></li><li><a href="global.html#summaryIconChangeHover">summaryIconChangeHover</a></li><li><a href="global.html#summaryIconChangeOut">summaryIconChangeOut</a></li><li><a href="global.html#taskBoardEmpty">taskBoardEmpty</a></li><li><a href="global.html#toggelSubtaskCompleted">toggelSubtaskCompleted</a></li><li><a href="global.html#toggleCheckmark">toggleCheckmark</a></li><li><a href="global.html#touchElementStyle">touchElementStyle</a></li><li><a href="global.html#touchEnd">touchEnd</a></li><li><a href="global.html#touchHighlight">touchHighlight</a></li><li><a href="global.html#touchMove">touchMove</a></li><li><a href="global.html#updateContact">updateContact</a></li><li><a href="global.html#updateContactsPage">updateContactsPage</a></li><li><a href="global.html#updateTask">updateTask</a></li><li><a href="global.html#userNavbar">userNavbar</a></li><li><a href="global.html#validateFormEmail">validateFormEmail</a></li><li><a href="global.html#validatePasswords">validatePasswords</a></li><li><a href="global.html#validateRegistrationFields">validateRegistrationFields</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Nov 07 2023 10:35:56 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Dec 23 2023 13:04:07 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>
