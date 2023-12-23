@@ -68,13 +68,6 @@ function validateRegistrationFields() {
   let email = document.getElementById("emailregister").value;
   let password1 = document.getElementById("passwordregister1").value;
   let password2 = document.getElementById("passwordregister2").value;
-  let existingUser = users.find((u) => u.email === email);
-  if (existingUser) {
-    showPopup(
-      "This email address is already registered. Please use a different one."
-    );
-    return false;
-  }
   if (password1 !== password2) {
     showPopup("Your password does not match.");
     return false;
@@ -93,8 +86,6 @@ async function processRegistration() {
   let email = document.getElementById("emailregister").value;
   let password1 = document.getElementById("passwordregister1").value;
   let password2 = document.getElementById("passwordregister2").value;
-  let registerBtn = document.getElementById("registerBtn");
-  registerBtn.disabled = true;
 
   var formdata = new FormData();
   formdata.append("username", email);
@@ -111,27 +102,22 @@ async function processRegistration() {
   };
 
   await fetch(STORAGE_URL + "register/", requestOptions)
-    .then((response) => response.text())
+    .then((response) => response.json())
     .then((result) => {
-      // if ("token" in result) {
-      //   showPopup("Logged in successfully");
-      // } else {
-      //   showPopup("Email and/or password are incorrect");
-      // }
+      if (JSON.stringify(result.ok) != undefined) {
+        showPopup(JSON.stringify(result.ok).slice(1, -1));
+        let registerBtn = document.getElementById("registerBtn");
+        registerBtn.disabled = true;
+        resetFormValue();
+        setTimeout(() => {
+          openPage("index.html");
+        }, 3000);
+      } else {
+        showPopup(JSON.stringify(result.error).slice(1, -1));
+      }
     })
     .catch((error) => console.log("Server failed", error));
-  //   await loadUsers();
-
-  //   await setItem("users", JSON.stringify(users));
-  //   await loadStandardUserListAndContacts(email.value, name.value);
-  showPopupAndRedirect(
-    "You have successfully registered. Please check your email!",
-    "index.html"
-  );
-  resetFormValue();
 }
-
-async function checkLoginUser(email, password) {}
 
 /**
  * Reset the registration form values.
@@ -208,7 +194,14 @@ function forgetPassword() {
     .then((response) => response.json())
     .then((data) => {
       // Verarbeite die Serverantwort (z. B. zeige eine Erfolgsmeldung an)
-      console.log("Serverantwort:", data);
+      if (data.success != undefined) {
+        showPopup(data.success);
+        setTimeout(() => {
+          openPage("index.html");
+        }, 3000);
+      } else {
+        showPopup(data.error);
+      }
     })
     .catch((error) => {
       // Verarbeite Fehler (z. B. zeige eine Fehlermeldung an)

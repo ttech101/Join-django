@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -20,31 +21,21 @@
     <script src="../js/add_task.js"></script>
     <script src="../js/add_task_page.js"></script>
   </head>
+
   <body onload="includeHTML(), initContacts()">
     <div w3-include-html="../templates/header.html"></div>
     <div w3-include-html="../templates/sidebar.html"></div>
     <div w3-include-html="../templates/landscape.html"></div>
     <div class="contacts-body">
-      <div
-        id="contacts-add-bg"
-        class="contacts-add-bg d-none"
-        onclick="closeNewContacts()"
-      ></div>
+      <div id="contacts-add-bg" class="contacts-add-bg d-none" onclick="closeNewContacts()"></div>
       <div id="contacts-list-section" class="contacts-list-section">
-        <button
-          class="contacts-button contacts-bt-add contacts-bt-create"
-          onclick="showPopupContact()"
-        >
-          <span> Add new contact</span
-          ><img src="../img/contacts_add_icon.svg" alt="" />
+        <button class="contacts-button contacts-bt-add contacts-bt-create" onclick="showPopupContact()">
+          <span> Add new contact</span><img src="../img/contacts_add_icon.svg" alt="" />
         </button>
         <div class="contacts-list" id="contacts-list"></div>
       </div>
       <main id="contacts-main" class="contacts-main d-none-700">
-        <div
-          onclick="backToContactsList()"
-          class="d-none contacts-mobil-arrow-back"
-        >
+        <div onclick="backToContactsList()" class="d-none contacts-mobil-arrow-back">
           <img src="../img/arrow-left-line.svg" alt="" />
         </div>
         <div class="contacts-head">
@@ -56,4 +47,5 @@
       </main>
     </div>
   </body>
+
 </html>

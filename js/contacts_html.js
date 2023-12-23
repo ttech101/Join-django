@@ -90,7 +90,7 @@ function createPopupContact() {
                             <img src="../img/person.svg" alt="" />
                         </div>
                         <div class="contacts-input-con">
-                            <input type="email" pattern="^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$" id="popup-contact-email" placeholder="Email" class="contacts-input" required/>
+                            <input type="email" id="popup-contact-email" placeholder="Email" class="contacts-input" required/>
                             <img src="../img/mail.svg" alt="" />
                         </div>
                         <div class="contacts-input-con">

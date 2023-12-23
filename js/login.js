@@ -9,13 +9,6 @@ async function login() {
   let emailLogin = document.getElementById("email").value;
   let passwordLogin = document.getElementById("password").value;
   await checkLoginUser(emailLogin, passwordLogin);
-  // let user = users.find(u => u.email == emailLogin.value && u.password == passwordLogin.value);
-  // if (user) {
-  //     saveUserinLocalStorge(user.email,user.name);
-  //     window.location.href = './html/summary.html';
-  // } else {
-  //     showPopup('Email and/or password are incorrect.');
-  // }
 }
 
 /**
@@ -56,6 +49,7 @@ async function checkLoginUser(email, password) {
         sessionStorage.setItem("contacts", contact);
         sessionStorage.setItem("tasks", task);
         sessionStorage.setItem("name", long_name);
+        sessionStorage.setItem("email", email);
         window.location.href = "./html/summary.html";
         showPopup("Logged in successfully");
       } else {

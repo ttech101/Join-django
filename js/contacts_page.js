@@ -41,13 +41,13 @@ let hexColors = [
  * This function starts all the necessary functions to run the contacts.html
  */
 async function initContacts() {
+  loadFromLocalStorageContacts();
   await loadUserData();
   await downloadContact();
   checkUserLogin();
   loadFromLocalStorage();
-  loadFromLocalStorageContacts();
+
   renderContacts();
-  createHeaderName();
 }
 
 /**

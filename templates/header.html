@@ -10,14 +10,15 @@
             <img class="help" src="../img/help.svg">
         </a>
         <div class="user-border-logo" onclick="userNavbar()">
-            <div id="header-icon" class="header-icon">TT </div>
+            <div id="header-icon" class="header-icon"></div>
 
         </div>
         <div class="Logout d-none" id="navbar">
             <a href="./legal_notice.html"> <button class="btn-logout">Legal notice</button></a>
             <a href="./privacy_policy.html"><button class="btn-logout">Privacy Policy</button></a>
             <button onclick="openPage('../index.html');clearLocalStorage()" class="btn-logout">Log out</button>
-            <button onclick="openPage('../index.html');deleteUser()" class="btn-logout">Delete account</button>
+            <button onclick="showPopupWithConfirmation('Do you really want to delete your account?')"
+                class="btn-logout">Delete account</button>
         </div>
     </div>
 </header>

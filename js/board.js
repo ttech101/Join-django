@@ -5,7 +5,6 @@ async function initBoard() {
   await loadUserData();
   checkUserLogin();
   loadTaskBoard();
-  createHeaderName();
 }
 
 /**

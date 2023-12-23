@@ -206,7 +206,7 @@ function userNavbar() {
 function createHeaderName() {
   for (let i = 0; i < contacts.length; i++) {
     const element = contacts[i];
-    if (element.email == user) {
+    if (element.email == sessionStorage.email) {
       document.getElementById("header-icon").innerHTML = element.logogram;
       document.getElementById("header-icon").style.backgroundColor =
         element.hex_color;
@@ -223,5 +223,113 @@ function createHeaderName() {
 async function initHelp() {
   await loadUserData();
   loadFromLocalStorageContacts();
-  createHeaderName();
+}
+
+/**
+ * Displays a popup with confirmation text.
+ * @param {string} text - The text to be displayed in the popup.
+ */
+function showPopupWithConfirmation(text) {
+  var popup = createPopup(text);
+
+  var deleteButton = createDeleteButton();
+  deleteButton.addEventListener("click", function () {
+    deleteUserAndNavigate();
+  });
+  popup.appendChild(deleteButton);
+
+  var cancelButton = createCancelButton();
+  cancelButton.addEventListener("click", function () {
+    closePopupAndHideNavbar();
+  });
+  popup.appendChild(cancelButton);
+
+  document.body.appendChild(popup);
+  showPopupDeletet(popup);
+}
+
+/**
+ * Creates a popup element with the specified text.
+ * @param {string} text - The text to be displayed in the popup.
+ * @returns {HTMLElement} The created popup element.
+ */
+function createPopup(text) {
+  var popup = document.createElement("div");
+  popup.classList.add("popup");
+  var message = document.createElement("div");
+  message.textContent = text;
+  popup.appendChild(message);
+  return popup;
+}
+
+/**
+ * Creates a "Delete Account" button for the popup.
+ * @returns {HTMLButtonElement} The created button.
+ */
+function createDeleteButton() {
+  var deleteButton = createPopupButton("Delete Account");
+  deleteButton.classList.add("popup-button-delete");
+  deleteButton.classList.add("popup-button-delete-red");
+  return deleteButton;
+}
+
+/**
+ * Creates a "Cancel" button for the popup.
+ * @returns {HTMLButtonElement} The created button.
+ */
+function createCancelButton() {
+  var cancelButton = createPopupButton("Cancel");
+  cancelButton.classList.add("popup-button-delete");
+  return cancelButton;
+}
+
+/**
+ * Creates a general popup button with the specified text.
+ * @param {string} text - The text of the button.
+ * @returns {HTMLButtonElement} The created button.
+ */
+function createPopupButton(text) {
+  var button = document.createElement("button");
+  button.textContent = text;
+  return button;
+}
+
+/**
+ * Displays the popup element.
+ * @param {HTMLElement} popup - The popup element to be displayed.
+ */
+function showPopupDeletet(popup) {
+  setTimeout(function () {
+    popup.style.top = "30px";
+  }, 100);
+}
+
+/**
+ * Deletes the user and navigates to the home page.
+ */
+function deleteUserAndNavigate() {
+  deleteUser();
+  closePopup();
+  setTimeout(function () {
+    openPage("../index.html");
+  }, 1000);
+}
+
+/**
+ * Closes the popup and hides the navigation bar.
+ */
+function closePopupAndHideNavbar() {
+  closePopup();
+  document.getElementById("navbar").classList.add("d-none");
+}
+
+/**
+ * Closes the popup.
+ */
+function closePopup() {
+  var popup = document.querySelector(".popup");
+  popup.style.top = "-100px";
+  setTimeout(function () {
+    document.body.removeChild(popup);
+  }, 500);
 }

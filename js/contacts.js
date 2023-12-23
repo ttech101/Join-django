@@ -31,10 +31,15 @@ function validateFormEmail() {
  */
 async function saveNewContact() {
   let contactName = document.getElementById("popup-contact-name");
-  let contactNameAlterd =
-    contactName.value.charAt(0).toUpperCase() + contactName.value.slice(1);
   let contactEmail = document.getElementById("popup-contact-email");
   let contactPhone = document.getElementById("popup-contact-phone");
+  if (sessionStorage.contacts.length <= 3) {
+    contactName = sessionStorage.name + " (me)";
+    contactEmail = sessionStorage.contacts.email;
+  }
+  console.log("tste");
+  let contactNameAlterd =
+    contactName.value.charAt(0).toUpperCase() + contactName.value.slice(1);
   let logogram = getLogogram(contactNameAlterd);
   let contactColor = getContactColor();
   await saveNewContactValues(
@@ -84,8 +89,8 @@ async function saveNewContactValues(
     logogram: logogram,
     hex_color: contactColor,
   };
-  contacts.push(newContact);
-  await SaveInLocalStorageAndServer(user, contactsString, contacts);
+  // contacts.push(newContact);
+  // await SaveInLocalStorageAndServer(user, contactsString, contacts);
   await sendContact(
     contactEmail.value,
     contactColor,
