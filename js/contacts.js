@@ -39,10 +39,6 @@ async function saveNewContact() {
   let contactName = document.getElementById("popup-contact-name");
   let contactEmail = document.getElementById("popup-contact-email");
   let contactPhone = document.getElementById("popup-contact-phone");
-  if (sessionStorage.contacts.length <= 3) {
-    contactName = sessionStorage.name + " (me)";
-    contactEmail = sessionStorage.contacts.email;
-  }
   let contactNameAlterd =
     contactName.value.charAt(0).toUpperCase() + contactName.value.slice(1);
   let logogram = getLogogram(contactNameAlterd);

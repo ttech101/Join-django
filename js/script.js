@@ -136,11 +136,12 @@ async function setGuestUser() {
   user = "guest";
   sessionStorage.setItem(
     "authToken",
-    "51630fd22b6f59ddab983b0b70aebc9cce0cbc48"
+    "17463135f0dda16b5d9e5834273e447ee2dd587b"
   );
   await downloadTask();
   await downloadContact();
   sessionStorage.setItem("email", "guest@guest.de");
+  sessionStorage.setItem("name", "guest");
   openPage("./html/summary.html");
 }
 
