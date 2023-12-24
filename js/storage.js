@@ -401,10 +401,9 @@ function deleteUser() {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        console.log("Benutzer erfolgreich gelöscht");
       } else {
-        console.error(`Fehler beim Löschen des Benutzers: ${data.error}`);
+        console.error(`Error deleting user: ${data.error}`);
       }
     })
-    .catch((error) => console.error("Fehler beim Senden des Requests:", error));
+    .catch((error) => console.error("Error sending the request:", error));
 }

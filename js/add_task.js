@@ -232,14 +232,14 @@ function setPrioButtonColor(prio) {
  * @param {string} fieldCategory This variable is the name of the board category
  */
 function saveStringInLocalStorage(fieldCategory) {
-  localStorage.setItem("fieldCategory", fieldCategory);
+  sessionStorage.setItem("fieldCategory", fieldCategory);
 }
 
 /**
  * This function loads at the beginning of initalizing the page the value.
  */
 function loadStringFromLocalStorage() {
-  taskBoardField = localStorage.getItem("fieldCategory");
+  taskBoardField = sessionStorage.getItem("fieldCategory");
   if (taskBoardField == null) {
     taskBoardField = "";
   }
@@ -249,7 +249,7 @@ function loadStringFromLocalStorage() {
  * This function will delete the what is saved in localStorage with the key 'fieldCategory'.
  */
 function removeStringFromLocalStorage() {
-  localStorage.removeItem("fieldCategory");
+  sessionStorage.removeItem("fieldCategory");
   taskBoardField = "";
 }
 

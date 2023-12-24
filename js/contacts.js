@@ -184,7 +184,7 @@ async function deleteContacts(i) {
     await deleteContact(i);
     await downloadContact();
     closeNewContacts();
-    // removeFromMainPage();
+    removeFromMainPage();
     showPopup("Contact deleted");
     renderContacts();
   }

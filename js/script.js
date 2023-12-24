@@ -140,7 +140,7 @@ async function setGuestUser() {
   );
   await downloadTask();
   await downloadContact();
-  console.log("hier");
+  sessionStorage.setItem("email", "guest@guest.de");
   openPage("./html/summary.html");
 }
 

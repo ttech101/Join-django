@@ -12,19 +12,6 @@ async function login() {
 }
 
 /**
- * Saves a user's email and name to LocalStorage.
- *
- * @param {string} u - The user's email.
- * @param {string} n - The user's name.
- */
-function saveUserinLocalStorge(u, n) {
-  user = JSON.stringify(u);
-  user_name = JSON.stringify(n);
-  localStorage.setItem("user", user);
-  localStorage.setItem("name", user_name);
-}
-
-/**
  * Asynchronously checks the login credentials of a user and performs actions based on the server response.
  *
  * @function
@@ -107,9 +94,7 @@ function sendPasswordChangeRequest(newPassword) {
     body: JSON.stringify(data),
   })
     .then((response) => response.json())
-    .then((result) => {
-      // console.log(result);
-    })
+    .then((result) => {})
     .catch((error) => {
       console.error("Error:", error);
     });
