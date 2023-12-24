@@ -1,4 +1,4 @@
-const STORAGE_URL = "http://localhost:8000/";
+const STORAGE_URL = "https://ttech101.pythonanywhere.com/";
 let user; // Creation of users variable
 let list; //Creation of list variable
 let contacts; //Creation of contact variable
