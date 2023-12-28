@@ -110,10 +110,49 @@ async function processRegistration() {
           openPage("index.html");
         }, 3000);
       } else {
-        showPopup(JSON.stringify(result.error).slice(1, -1));
+        errorRegisterFeedback(result);
+        // showPopup(JSON.stringify(result.error).slice(1, -1));
       }
     })
     .catch((error) => console.log("Server failed", error));
+}
+
+function errorRegisterFeedback(result) {
+  let mailError = result.error.email;
+  let password1Error = result.error.password1;
+  let password2Error = result.error.password2;
+  if (mailError != null) {
+    document.getElementById("emailregister").style.border = "1px solid red";
+    showPopup(mailError);
+  } else {
+    document.getElementById("emailregister").style.border = "";
+  }
+  if (password1Error != null || password2Error != null) {
+    document.getElementById("passwordregister1").style.border = "1px solid red";
+    document.getElementById("passwordregister2").style.border = "1px solid red";
+    let errorPassword = forError(password1Error, password2Error);
+    showPopup(errorPassword);
+  } else {
+    document.getElementById("passwordregister1").style.border = "";
+    document.getElementById("passwordregister2").style.border = "";
+  }
+}
+
+function forError(e1, e2) {
+  let error = "";
+  if (e1 != null) {
+    for (let i = 0; i < e1.length; i++) {
+      const element1 = e1[i];
+      // error.push(element1);
+    }
+  }
+  if (e2 != null) {
+    for (let j = 0; j < e2.length; j++) {
+      const element2 = e2[j];
+      error += element2;
+    }
+  }
+  return error;
 }
 
 /**
@@ -170,7 +209,6 @@ async function changePassword() {
     let password = document.getElementById("ForgotPassword1").value;
     sendPasswordChangeRequest(password);
     setTimeout(() => {
-      console.log("geht hier was");
       window.location.href = "../index.html";
     }, 2000);
   }

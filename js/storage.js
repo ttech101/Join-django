@@ -1,4 +1,5 @@
 const STORAGE_URL = "https://ttech101.pythonanywhere.com/";
+// const STORAGE_URL = "http://127.0.0.1:8000/";
 let user; // Creation of users variable
 let list; //Creation of list variable
 let contacts; //Creation of contact variable
